@@ -18,7 +18,7 @@
     <dd class="col-sm-10">@Model.Price</dd>
 </dl>
 
-<form asp-action="Delete" method="post">
+<form asp-action="DeleteConfirmed" method="post">
     <input type="hidden" asp-for="Id" />
     <button type="submit" class="btn btn-danger">Delete</button>
     <a asp-action="Index">Back to List</a>
