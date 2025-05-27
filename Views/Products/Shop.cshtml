@@ -1,0 +1,82 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Include necessary meta tags, stylesheets, and scripts here -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carpet Store</title>
+
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+
+<body>
+
+    <!-- Header Section -->
+    <header class="info3 cid-tsEY2vwh5a mbr-parallax-background" id="info3-b">
+        <div class="mbr-overlay" style="opacity: 0.9; background-image: url('https://images.unsplash.com/photo-1608724553456-89e963624dbb?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8cnVnfGVufDB8fDB8fHww');"></div>
+        <div class="mbr-overlay" style="opacity: 0.7; background-color: rgb(0, 0, 0);"></div>
+
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="card col-12 col-lg-10">
+                    <div class="card-wrapper">
+                        <div class="card-box align-center">
+                            <h1 class="card-title mbr-fonts-style align-center mb-4 display-1"><strong>Carpet Store</strong></h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Content Section -->
+    <section class="content2 cid-tsEZVFGbrL" id="content2-g">
+        <div class="container">
+            <div class="mbr-section-head">
+                <h5 class="mbr-section-subtitle mbr-fonts-style align-center mb-0 mt-2 display-5"> Elevate Every Step in Style...</h5>
+            </div>
+
+            <div class="row mt-4">
+                @foreach (var item in Model)
+                {
+                    <div class="item features-image col-12 col-md-6 col-lg-4">
+                        <div class="item-wrapper">
+                            <div class="item-img">
+                                <img src="@item.ImageUrl" alt="@item.Name" title="@item.Name">
+                            </div>
+                            <div class="item-content">
+                                <a asp-controller="Products" asp-action="Detail" asp-route-id="@item.Id">
+                                    <h6 class="item-subtitle"><strong>@item.Name</strong></h6>
+                                </a>
+                                <p class="mbr-text">@item.Price.ToString("c")</p>
+                            </div>
+                            <div class="mbr-section-btn item-footer mt-2">
+                                <a asp-controller="ShoppingCart" asp-action="AddToShoppingCart" asp-route-pId="@item.Id" class="btn btn-primary" target="_self">Add to Cart</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+    </section>
+
+
+    <!-- Footer Section -->
+    <section class="footer7 cid-tsQdrs3Vrj" once="footers" id="footer7-13">
+        <div class="container">
+            <div class="media-container-row align-center mbr-white">
+                <div class="col-12">
+                    <p class="mbr-text mb-0 mbr-fonts-style display-7">
+                        Made by:Muhamed Neziri Besim Kamberi Arif Arifi
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Include Bootstrap JS and any other necessary scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

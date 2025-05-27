@@ -1,0 +1,29 @@
+﻿@model CarpetStore.Models.Product
+<div style="margin-top:100px">
+<h2>Edit Product</h2>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Detail"></label>
+        <textarea asp-for="Detail" class="form-control"></textarea>
+    </div>
+    <div class="form-group">
+        <label asp-for="Price"></label>
+        <input asp-for="Price" class="form-control" />
+    </div>
+        <div class="form-group">
+            <label asp-for="ImageUrl"></label>
+            <input type="file" asp-for="ImageUrl" class="form-control" />
+        </div>
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+</form>
+
+<p>
+    <a asp-action="Index">Back to List</a>
+</p>
+</div>
