@@ -30,10 +30,16 @@ namespace CarpetStore.Models.Services
 
         public void AddProduct(Product product)
         {
+            // Set category based on product name
+            if (!string.IsNullOrEmpty(product.Name))
+            {
+                var firstWord = product.Name.Split(' ')[0];
+                product.Category = firstWord + " Collection";
+            }
+
             dbContext.Products.Add(product);
             dbContext.SaveChanges();
         }
-
 
         public Product GetProductById(int id)
         {
@@ -42,6 +48,13 @@ namespace CarpetStore.Models.Services
 
         public void UpdateProduct(Product product)
         {
+            // Update category based on product name
+            if (!string.IsNullOrEmpty(product.Name))
+            {
+                var firstWord = product.Name.Split(' ')[0];
+                product.Category = firstWord + " Collection";
+            }
+
             dbContext.Products.Update(product);
             dbContext.SaveChanges();
         }

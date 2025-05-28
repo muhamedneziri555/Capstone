@@ -1,31 +1,61 @@
 ﻿@model CarpetStore.Models.Product
-<div style="margin-top: 100px; display: flex; flex-direction: column; align-items: center;">
-    <h2 style="text-align: center; font-size: 2rem; font-weight: 600;">Edit Product</h2>
 
-    <form asp-action="Edit" method="post" style="width: 80%; max-width: 600px; margin: 0 auto;">
-        <input type="hidden" asp-for="Id" />
-        <div class="form-group" style="margin-bottom: 15px;">
-            <label asp-for="Name" style="display: block; text-align: center; font-weight: 500;"></label>
-            <input asp-for="Name" class="form-control" style="text-align: center;" />
-        </div>
-        <div class="form-group" style="margin-bottom: 15px;">
-            <label asp-for="Detail" style="display: block; text-align: center; font-weight: 500;"></label>
-            <textarea asp-for="Detail" class="form-control" style="text-align: center;"></textarea>
-        </div>
-        <div class="form-group" style="margin-bottom: 15px;">
-            <label asp-for="Price" style="display: block; text-align: center; font-weight: 500;"></label>
-            <input asp-for="Price" class="form-control" style="text-align: center;" />
-        </div>
-        <div class="form-group" style="margin-bottom: 15px;">
-            <label asp-for="ImageUrl" style="display: block; text-align: center; font-weight: 500;"></label>
-            <input type="text" asp-for="ImageUrl" class="form-control" placeholder="Enter image URL" style="text-align: center;" />
-        </div>
-        <div style="text-align: center; margin-top: 20px;">
-            <button type="submit" class="btn btn-primary">Save Changes</button>
-        </div>
-    </form>
+<div style="margin-top: 100px; padding: 20px;">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="text-center mb-4">Edit Product</h2>
+                    <div class="alert alert-info">
+                        <strong>Note:</strong> The product's category will be automatically updated based on the first word of its name. 
+                        For example, if you change the name to "Acrylic Blue Carpet", it will be moved to the "Acrylic Collection".
+                    </div>
+                    <form asp-action="Edit">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="Id" />
+                        
+                        <div class="form-group mb-3">
+                            <label asp-for="Name" class="control-label">Product Name</label>
+                            <input asp-for="Name" class="form-control" placeholder="Enter product name (e.g., Acrylic Blue Carpet)" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
 
-    <p style="text-align: center; margin-top: 20px;">
-        <a asp-action="Index">Back to List</a>
-    </p>
+                        <div class="form-group mb-3">
+                            <label asp-for="Detail" class="control-label">Product Details</label>
+                            <textarea asp-for="Detail" class="form-control" rows="3" placeholder="Enter product details"></textarea>
+                            <span asp-validation-for="Detail" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="ImageUrl" class="control-label">Image URL</label>
+                            <input asp-for="ImageUrl" class="form-control" placeholder="Enter image URL" />
+                            <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="Price" class="control-label">Price</label>
+                            <input asp-for="Price" class="form-control" placeholder="Enter price" />
+                            <span asp-validation-for="Price" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <div class="form-check">
+                                <input asp-for="IsTrendingProduct" class="form-check-input" />
+                                <label asp-for="IsTrendingProduct" class="form-check-label">Trending Product</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group text-center">
+                            <button type="submit" class="btn btn-primary">Save</button>
+                            <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,28 +1,60 @@
 ﻿@model CarpetStore.Models.Product
-<div style="margin-top:100px">
-<h2>Create Product</h2>
 
-<form asp-action="Create" method="post">
-    <div class="form-group">
-        <label asp-for="Name"></label>
-        <input asp-for="Name" class="form-control" />
-    </div>
-    <div class="form-group">
-        <label asp-for="Detail"></label>
-        <textarea asp-for="Detail" class="form-control"></textarea>
-    </div>
-    <div class="form-group">
-        <label asp-for="Price"></label>
-        <input asp-for="Price" class="form-control" />
-    </div>
-        <div class="form-group">
-            <label asp-for="ImageUrl"></label>
-            <input type="text" asp-for="ImageUrl" class="form-control" placeholder="Enter image URL" />
+<div style="margin-top: 100px; padding: 20px;">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="text-center mb-4">Create New Product</h2>
+                    <div class="alert alert-info">
+                        <strong>Note:</strong> The product's category will be automatically set based on the first word of its name. 
+                        For example, if you name a product "Acrylic Blue Carpet", it will be added to the "Acrylic Collection".
+                    </div>
+                    <form asp-action="Create">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        
+                        <div class="form-group mb-3">
+                            <label asp-for="Name" class="control-label">Product Name</label>
+                            <input asp-for="Name" class="form-control" placeholder="Enter product name (e.g., Acrylic Blue Carpet)" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="Detail" class="control-label">Product Details</label>
+                            <textarea asp-for="Detail" class="form-control" rows="3" placeholder="Enter product details"></textarea>
+                            <span asp-validation-for="Detail" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="ImageUrl" class="control-label">Image URL</label>
+                            <input asp-for="ImageUrl" class="form-control" placeholder="Enter image URL" />
+                            <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="Price" class="control-label">Price</label>
+                            <input asp-for="Price" class="form-control" placeholder="Enter price" />
+                            <span asp-validation-for="Price" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <div class="form-check">
+                                <input asp-for="IsTrendingProduct" class="form-check-input" />
+                                <label asp-for="IsTrendingProduct" class="form-check-label">Trending Product</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group text-center">
+                            <button type="submit" class="btn btn-primary">Create</button>
+                            <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-    <button type="submit" class="btn btn-primary">Create</button>
-</form>
-
-<p>
-    <a asp-action="Index">Back to List</a>
-</p>
+    </div>
 </div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
