@@ -1,38 +1,37 @@
 ﻿@model List<CarpetStore.Models.Product>
-<div style="margin-top: 100px">
-    <h5 class="mbr-section-subtitle mbr-fonts-style align-center mb-0 mt-2 display-5">Products</h5>
+<div style="margin-top: 100px; display: flex; flex-direction: column; align-items: center;">
+    <h5 class="mbr-section-subtitle mbr-fonts-style align-center mb-0 mt-2 display-5" style="text-align: center; font-size: 2rem; font-weight: 600;">Products</h5>
 
-    <table id="table" class="table table-striped custom-table datatable m-5">
+    <table id="table" class="table table-striped custom-table datatable m-5" style="width: 80%; margin: 0 auto; text-align: center;">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Image</th>
-                <th>Name</th>
-                <th>Detail</th>
-                <th>Price</th>
-                <th>Actions</th>
+                <th style="text-align: center;">Id</th>
+                <th style="text-align: center;">Image</th>
+                <th style="text-align: center;">Name</th>
+                <th style="text-align: center;">Detail</th>
+                <th style="text-align: center;">Price</th>
+                <th style="text-align: center;">Actions</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var product in Model)
             {
                 <tr>
-                    <td>@product.Id</td>
-                    <td><img src="@product.ImageUrl" width="100" height="100" style="object-fit: cover;" alt="@product.Name" onerror="this.src='/images/no-image.png'"></td>
-                   
-                    <td>@product.Name</td>
-                    <td>@product.Detail</td>
-                    <td>@product.Price</td>
-                    <td>
-                        <a asp-action="Detail" asp-route-id="@product.Id">Details</a> |
-                        <a asp-action="Edit" asp-route-id="@product.Id">Edit</a> |
-                        <a asp-action="Delete" asp-route-id="@product.Id">Delete</a>
+                    <td style="vertical-align: middle; text-align: center;">@product.Id</td>
+                    <td style="vertical-align: middle; text-align: center;"><img src="@product.ImageUrl" width="100" height="100" style="object-fit: cover; border-radius: 12px;" alt="@product.Name" onerror="this.src='/images/no-image.png'"></td>
+                    <td style="vertical-align: middle; text-align: center; font-weight: 500;">@product.Name</td>
+                    <td style="vertical-align: middle; text-align: center;">@product.Detail</td>
+                    <td style="vertical-align: middle; text-align: center; font-weight: 500;">@product.Price.ToString("C2")</td>
+                    <td style="vertical-align: middle; text-align: center;">
+                        <a asp-action="Detail" asp-route-id="@product.Id" class="btn btn-outline-primary btn-sm mx-1">Details</a>
+                        <a asp-action="Edit" asp-route-id="@product.Id" class="btn btn-outline-warning btn-sm mx-1">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@product.Id" class="btn btn-outline-danger btn-sm mx-1">Delete</a>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
-    <a asp-action="Create" class="btn btn-info">Create</a>
+    <a asp-action="Create" class="btn btn-info" style="margin: 20px auto; display: block;">Create</a>
     <script>
         new DataTable('#table');
     </script>

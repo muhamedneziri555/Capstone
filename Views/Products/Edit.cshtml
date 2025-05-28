@@ -1,29 +1,31 @@
 ﻿@model CarpetStore.Models.Product
-<div style="margin-top:100px">
-<h2>Edit Product</h2>
+<div style="margin-top: 100px; display: flex; flex-direction: column; align-items: center;">
+    <h2 style="text-align: center; font-size: 2rem; font-weight: 600;">Edit Product</h2>
 
-<form asp-action="Edit" method="post">
-    <input type="hidden" asp-for="Id" />
-    <div class="form-group">
-        <label asp-for="Name"></label>
-        <input asp-for="Name" class="form-control" />
-    </div>
-    <div class="form-group">
-        <label asp-for="Detail"></label>
-        <textarea asp-for="Detail" class="form-control"></textarea>
-    </div>
-    <div class="form-group">
-        <label asp-for="Price"></label>
-        <input asp-for="Price" class="form-control" />
-    </div>
-        <div class="form-group">
-            <label asp-for="ImageUrl"></label>
-            <input type="text" asp-for="ImageUrl" class="form-control" placeholder="Enter image URL" />
+    <form asp-action="Edit" method="post" style="width: 80%; max-width: 600px; margin: 0 auto;">
+        <input type="hidden" asp-for="Id" />
+        <div class="form-group" style="margin-bottom: 15px;">
+            <label asp-for="Name" style="display: block; text-align: center; font-weight: 500;"></label>
+            <input asp-for="Name" class="form-control" style="text-align: center;" />
         </div>
-    <button type="submit" class="btn btn-primary">Save Changes</button>
-</form>
+        <div class="form-group" style="margin-bottom: 15px;">
+            <label asp-for="Detail" style="display: block; text-align: center; font-weight: 500;"></label>
+            <textarea asp-for="Detail" class="form-control" style="text-align: center;"></textarea>
+        </div>
+        <div class="form-group" style="margin-bottom: 15px;">
+            <label asp-for="Price" style="display: block; text-align: center; font-weight: 500;"></label>
+            <input asp-for="Price" class="form-control" style="text-align: center;" />
+        </div>
+        <div class="form-group" style="margin-bottom: 15px;">
+            <label asp-for="ImageUrl" style="display: block; text-align: center; font-weight: 500;"></label>
+            <input type="text" asp-for="ImageUrl" class="form-control" placeholder="Enter image URL" style="text-align: center;" />
+        </div>
+        <div style="text-align: center; margin-top: 20px;">
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+        </div>
+    </form>
 
-<p>
-    <a asp-action="Index">Back to List</a>
-</p>
+    <p style="text-align: center; margin-top: 20px;">
+        <a asp-action="Index">Back to List</a>
+    </p>
 </div>

@@ -1,26 +1,34 @@
 ﻿@model CarpetStore.Models.Product
-<div style="margin-top:100px ">
-<h2>Delete Product</h2>
+<div style="margin-top: 100px; display: flex; flex-direction: column; align-items: center;">
+    <h2 style="text-align: center; font-size: 2rem; font-weight: 600;">Delete Product</h2>
 
-<p>Are you sure you want to delete this product?</p>
+    <p style="text-align: center; font-size: 1.2rem; margin-bottom: 30px;">Are you sure you want to delete this product?</p>
 
-<dl class="row">
-    <dt class="col-sm-2">Id</dt>
-    <dd class="col-sm-10">@Model.Id</dd>
+    <div style="width: 80%; max-width: 600px; margin: 0 auto;">
+        <div class="form-group" style="margin-bottom: 15px;">
+            <label style="display: block; text-align: center; font-weight: 500;">Id</label>
+            <input type="text" value="@Model.Id" class="form-control" style="text-align: center;" readonly />
+        </div>
 
-    <dt class="col-sm-2">Name</dt>
-    <dd class="col-sm-10">@Model.Name </dd>s
+        <div class="form-group" style="margin-bottom: 15px;">
+            <label style="display: block; text-align: center; font-weight: 500;">Name</label>
+            <input type="text" value="@Model.Name" class="form-control" style="text-align: center;" readonly />
+        </div>
 
-    <dt class="col-sm-2">Detail</dt>
-    <dd class="col-sm-10">@Model.Detail</dd>
+        <div class="form-group" style="margin-bottom: 15px;">
+            <label style="display: block; text-align: center; font-weight: 500;">Detail</label>
+            <textarea class="form-control" style="text-align: center;" readonly>@Model.Detail</textarea>
+        </div>
 
-    <dt class="col-sm-2">Price</dt>
-    <dd class="col-sm-10">@Model.Price</dd>
-</dl>
+        <div class="form-group" style="margin-bottom: 15px;">
+            <label style="display: block; text-align: center; font-weight: 500;">Price</label>
+            <input type="text" value="@Model.Price.ToString("C2")" class="form-control" style="text-align: center;" readonly />
+        </div>
 
-<form asp-action="DeleteConfirmed" method="post">
-    <input type="hidden" asp-for="Id" />
-    <button type="submit" class="btn btn-danger">Delete</button>
-    <a asp-action="Index">Back to List</a>
-</form>
+        <form asp-action="DeleteConfirmed" method="post" style="text-align: center; margin-top: 20px;">
+            <input type="hidden" asp-for="Id" />
+            <button type="submit" class="btn btn-danger">Delete</button>
+            <a asp-action="Index" class="btn btn-secondary" style="margin-left: 10px;">Back to List</a>
+        </form>
+    </div>
 </div>
