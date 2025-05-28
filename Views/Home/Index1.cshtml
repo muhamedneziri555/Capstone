@@ -84,9 +84,9 @@
                     <h1 class="mbr-section-title mbr-fonts-style mbr-white mb-3 display-1"><strong>CARPET STORE.</strong></h1>
 
                     <p class="mbr-text mbr-fonts-style mbr-white display-7">
-                        Your Gateway
+                        Your Gateway to Luxurious Living
                     </p>
-                    <div class="mbr-section-btn mt-3"><a class="btn btn-primary display-4" asp-controller="Products" asp-action="Shop"><span class="mobi-mbri mobi-mbri-shopping-bag mbr-iconfont mbr-iconfont-btn"></span>Shop now&nbsp;</a></div>
+                    <div class="mbr-section-btn mt-3"><a class="btn btn-primary display-4" asp-controller="Products" asp-action="AllProducts"><span class="mobi-mbri mobi-mbri-shopping-bag mbr-iconfont mbr-iconfont-btn"></span>Shop now&nbsp;</a></div>
                 </div>
             </div>
         </div>
@@ -95,93 +95,32 @@
     <section data-bs-version="5.1" class="content2 cid-tsEQSCqggh" id="content2-2">
         <div class="container">
             <div class="mbr-section-head">
-                <h4 class="mbr-section-title mbr-fonts-style align-center mb-0 display-2"><strong>Top Selling Carpets</strong></h4>
-                <h5 class="mbr-section-subtitle mbr-fonts-style align-center mb-0 mt-2 display-5">Elevate Your Space with our Top-Selling Carpets.</h5>
+                <h4 class="mbr-section-title mbr-fonts-style align-center mb-0 display-2"><strong>Trending Products</strong></h4>
+                <h5 class="mbr-section-subtitle mbr-fonts-style align-center mb-0 mt-2 display-5">Elevate Your Space with our Trending Carpets.</h5>
             </div>
             <div class="row mt-4">
-                <div class="item features-image сol-12 col-md-6 col-lg-4">
-                    <div class="item-wrapper">
-                        <div class="item-img">
-                            <img src="https://fe3b71.cdn.akinoncloud.com/products/2023/06/02/1364/59fc474d-2f88-4e37-bb18-b796a1693e86_size1024x1319.jpg" alt="Carpet Store" title="">
+                @foreach (var product in Model)
+                {
+                    <div class="item features-image сol-12 col-md-6 col-lg-4">
+                        <div class="item-wrapper">
+                            <div class="item-img">
+                                <img src="@product.ImageUrl" alt="@product.Name" title="">
+                            </div>
+                            <div class="item-content">
+                                <h6 class="item-subtitle mbr-fonts-style mt-1 display-7"><strong>@product.Name</strong></h6>
+                                <p class="mbr-text mbr-fonts-style mt-3 display-7">@product.Price.ToString("C2")</p>
+                            </div>
+                            <div class="mbr-section-btn item-footer mt-2">
+                                <a asp-controller="ShoppingCart" asp-action="AddToShoppingCart" asp-route-pId="@product.Id" class="btn btn-primary item-btn display-4" target="_self">
+                                    <span class="mbrib-cart-add mbr-iconfont mbr-iconfont-btn"></span>Add to cart&nbsp;
+                                </a>
+                                <a asp-controller="Products" asp-action="Detail" asp-route-id="@product.Id" class="btn btn-primary item-btn display-4" target="_self">
+                                    <span class="mbrib-eye mbr-iconfont mbr-iconfont-btn"></span>View Details&nbsp;
+                                </a>
+                            </div>
                         </div>
-                        <div class="item-content">
-
-                            <h6 class="item-subtitle mbr-fonts-style mt-1 display-7"><strong>Milano</strong></h6>
-                            <p class="mbr-text mbr-fonts-style mt-3 display-7">160 $</p>
-                        </div>
-                        <div class="mbr-section-btn item-footer mt-2"><a href="" class="btn item-btn btn-primary display-4" target="_self"><span class="mbrib-cart-add mbr-iconfont mbr-iconfont-btn"></span>Add to cart</a></div>
                     </div>
-                </div>
-                <div class="item features-image сol-12 col-md-6 col-lg-4">
-                    <div class="item-wrapper">
-                        <div class="item-img">
-                            <img src="https://fe3b71.cdn.akinoncloud.com/products/2023/06/02/1542/a84e5ea8-d699-4098-aa79-811852cf6009_size1024x1319.jpg" alt="Carpet Store" title="">
-                        </div>
-                        <div class="item-content">
-
-                            <h6 class="item-subtitle mbr-fonts-style mt-1 display-7"><strong>Loft</strong></h6>
-                            <p class="mbr-text mbr-fonts-style mt-3 display-7">
-                                120$<br>
-                            </p>
-                        </div>
-                        <div class="mbr-section-btn item-footer mt-2"><a asp-controller="ShoppingCart" asp-action="AddToShoppingCart" asp-route-pId="" class="btn btn-primary item-btn display-4" target="_self"><span class="mbrib-cart-add mbr-iconfont mbr-iconfont-btn"><br></span>Add to cart<br></a></div>
-                    </div>
-                </div>
-                <div class="item features-image сol-12 col-md-6 col-lg-4">
-                    <div class="item-wrapper">
-                        <div class="item-img">
-                            <img src="https://fe3b71.cdn.akinoncloud.com/products/2023/06/02/711/e510b8b1-739f-46b3-b312-1d6fd168c9b2_size1024x1319.jpg" alt="Carpet Store" title="">
-                        </div>
-                        <div class="item-content">
-
-                            <h6 class="item-subtitle mbr-fonts-style mt-1 display-7"><strong>Parma</strong></h6>
-                            <p class="mbr-text mbr-fonts-style mt-3 display-7">110 $</p>
-                        </div>
-                        <div class="mbr-section-btn item-footer mt-2"><a href="" class="btn btn-primary item-btn display-4" target="_self"><span class="mbrib-cart-add mbr-iconfont mbr-iconfont-btn"></span>Add to cart&nbsp;</a></div>
-                    </div>
-                </div>
-                <div class="item features-image сol-12 col-md-6 col-lg-4">
-                    <div class="item-wrapper">
-                        <div class="item-img">
-                            <img src="https://fe3b71.cdn.akinoncloud.com/products/2023/06/02/665/75ff5e5d-91e7-4014-821f-5b64ce80cdf2_size1024x1319.jpg" alt="Carpet Store" title="" data-slide-to="3" data-bs-slide-to="4">
-                        </div>
-                        <div class="item-content">
-
-                            <h6 class="item-subtitle mbr-fonts-style mt-1 display-7"><strong>Linea</strong></h6>
-                            <p class="mbr-text mbr-fonts-style mt-3 display-7">180 $</p>
-                        </div>
-                        <div class="mbr-section-btn item-footer mt-2"><a href="" class="btn btn-primary item-btn display-4" target="_self"><span class="mbrib-cart-add mbr-iconfont mbr-iconfont-btn"></span>Add to cart&nbsp;</a></div>
-                    </div>
-                </div>
-                <div class="item features-image сol-12 col-md-6 col-lg-4">
-                    <div class="item-wrapper">
-                        <div class="item-img">
-                            <img src="https://fe3b71.cdn.akinoncloud.com/products/2023/06/02/1689/c9699f2b-7eb7-42a6-a540-b635db7e19a6_size1024x1319.jpg" alt="Carpet Store" title="" data-slide-to="4" data-bs-slide-to="5">
-                        </div>
-                        <div class="item-content">
-
-                            <h6 class="item-subtitle mbr-fonts-style mt-1 display-7"><strong>Kids</strong></h6>
-                            <p class="mbr-text mbr-fonts-style mt-3 display-7">89 $</p>
-                        </div>
-                        <div class="mbr-section-btn item-footer mt-2"><a href="" class="btn btn-primary item-btn display-4" target="_self"><span class="mbrib-cart-add mbr-iconfont mbr-iconfont-btn"></span>Add to cart&nbsp;</a></div>
-                    </div>
-                </div>
-                <div class="item features-image сol-12 col-md-6 col-lg-4">
-                    <div class="item-wrapper">
-                        <div class="item-img">
-                            <a href="page2.html">
-                                <img src="https://fe3b71.cdn.akinoncloud.com/products/2023/06/02/441/51c2d295-dd5a-4151-ac51-e1ff7752a9b7_size1024x1319.jpg" alt="Carpet Store" title="" data-slide-to="5" data-bs-slide-to="6">
-                            </a>
-                        </div>
-                        <div class="item-content">
-
-                            <h6 class="item-subtitle mbr-fonts-style mt-1 display-7"><strong>Misha</strong></h6>
-                            <p class="mbr-text mbr-fonts-style mt-3 display-7">50 $</p>
-                        </div>
-                        <div class="mbr-section-btn item-footer mt-2"><a href="page3.html" class="btn btn-primary item-btn display-4"><span class="mbrib-cart-add mbr-iconfont mbr-iconfont-btn"></span>Add to cart&nbsp;</a></div>
-                    </div>
-                </div>
-
+                }
             </div>
         </div>
     </section>
