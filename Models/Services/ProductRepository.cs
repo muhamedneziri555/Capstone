@@ -48,6 +48,11 @@ namespace CarpetStore.Models.Services
 
         public void DeleteProduct(int id)
         {
+            // First, remove all shopping cart items that reference this product
+            var cartItems = dbContext.ShoppingCartItems.Where(s => s.Product.Id == id).ToList();
+            dbContext.ShoppingCartItems.RemoveRange(cartItems);
+
+            // Then remove the product
             var product = dbContext.Products.Find(id);
             if (product != null)
             {
