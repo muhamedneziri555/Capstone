@@ -3,6 +3,7 @@ using CarpetStore.Models.Interfaces;
 using CarpetStore.Models.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 
 namespace CarpetStore.Controllers
 {
@@ -100,6 +101,34 @@ namespace CarpetStore.Controllers
         {
             productRepository.DeleteProduct(id);
             return RedirectToAction("Index");
+        }
+
+        [AllowAnonymous]
+        public IActionResult AllProducts()
+        {
+            var products = productRepository.GetAllProducts().ToList();
+            return View(products);
+        }
+
+        [AllowAnonymous]
+        public IActionResult Category(string category)
+        {
+            var products = productRepository.GetAllProducts()
+                .Where(p => p.Name.StartsWith(category))
+                .ToList();
+
+            ViewBag.Category = category;
+            ViewBag.DebugInfo = $"Found {products.Count} products in {category} Collection";
+            ViewBag.AllCategories = new[] { "Acrylic", "Persian", "Polyester", "Synthetic" };
+
+            return View(products);
+        }
+
+        [AllowAnonymous]
+        public IActionResult DebugCategories()
+        {
+            var products = productRepository.GetAllProducts().ToList();
+            return View(products);
         }
     }
 
