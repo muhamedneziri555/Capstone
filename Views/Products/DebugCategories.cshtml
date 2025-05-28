@@ -1,0 +1,31 @@
+@model List<CarpetStore.Models.Product>
+
+<div style="margin-top: 100px; padding: 20px;">
+    <h2 style="text-align: center; font-size: 2rem; font-weight: 600; margin-bottom: 40px;">Debug Categories</h2>
+
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Category</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var product in Model)
+                    {
+                        <tr>
+                            <td>@product.Id</td>
+                            <td>@product.Name</td>
+                            <td>@(product.Category ?? "No Category")</td>
+                            <td>@product.Price.ToString("C2")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div> 

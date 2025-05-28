@@ -1,5 +1,6 @@
 ﻿using CarpetStore.Data;
 using CarpetStore.Models.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace CarpetStore.Models.Services
 {
@@ -31,8 +32,31 @@ namespace CarpetStore.Models.Services
 
             order.OrderPlaced = DateTime.Now;
             order.OrderTotal = shoppingCartRepository.GetShoppingCartTotal();
+            order.OrderStatus = "Pending"; // Set initial status
 
             dbContext.Orders.Add(order);
+            dbContext.SaveChanges();
+        }
+
+        public IEnumerable<Order> GetAllOrders()
+        {
+            return dbContext.Orders
+                .Include(o => o.OrderDetails)
+                .ThenInclude(od => od.Product)
+                .OrderByDescending(o => o.OrderPlaced);
+        }
+
+        public Order? GetOrderById(int id)
+        {
+            return dbContext.Orders
+                .Include(o => o.OrderDetails)
+                .ThenInclude(od => od.Product)
+                .FirstOrDefault(o => o.Id == id);
+        }
+
+        public void UpdateOrder(Order order)
+        {
+            dbContext.Orders.Update(order);
             dbContext.SaveChanges();
         }
     }

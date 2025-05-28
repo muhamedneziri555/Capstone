@@ -37,8 +37,9 @@
                     <!-- Email-->
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label asp-for="Phone" class="form-label">Phone</label>
-                            <input type="tel" class="form-control" asp-for="Phone" placeholder="">
+                            <label asp-for="PhoneNumber" class="form-label">Phone Number</label>
+                            <input asp-for="PhoneNumber" class="form-control" />
+                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                         </div>
                     </div>
                     <!-- Address-->

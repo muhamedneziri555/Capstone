@@ -1,0 +1,113 @@
+@model CarpetStore.Models.Order
+
+<div style="margin-top: 100px; padding: 20px;">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="mb-4">Order Details #@Model.Id</h2>
+                
+                <!-- Order Status -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Order Status</h5>
+                        <form asp-action="UpdateOrderStatus" method="post" class="d-flex align-items-center">
+                            <input type="hidden" name="id" value="@Model.Id" />
+                            <select name="status" class="form-select me-2" style="width: auto;">
+                                <option value="Pending">Pending</option>
+                                <option value="Processing">Processing</option>
+                                <option value="Shipped">Shipped</option>
+                                <option value="Delivered">Delivered</option>
+                                <option value="Cancelled">Cancelled</option>
+                            </select>
+                            <button type="submit" class="btn btn-primary">Update Status</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Customer Information -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Customer Information</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong>Name:</strong> @Model.FirstName @Model.LastName</p>
+                                <p><strong>Email:</strong> @Model.Email</p>
+                                <p><strong>Phone:</strong> @Model.PhoneNumber</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Address:</strong> @Model.Address</p>
+                                <p><strong>City:</strong> @Model.City</p>
+                                <p><strong>Zip Code:</strong> @Model.ZipCode</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Order Items -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Order Items</h5>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Product</th>
+                                        <th>Price</th>
+                                        <th>Quantity</th>
+                                        <th>Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.OrderDetails)
+                                    {
+                                        <tr>
+                                            <td>@item.Product?.Name</td>
+                                            <td>@item.Price.ToString("C2")</td>
+                                            <td>@item.Quantity</td>
+                                            <td>@((item.Price * item.Quantity).ToString("C2"))</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="3" class="text-end"><strong>Order Total:</strong></td>
+                                        <td><strong>@Model.OrderTotal.ToString("C2")</strong></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Order Information -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Order Information</h5>
+                        <p><strong>Order Date:</strong> @Model.OrderPlaced.ToString("MMM dd, yyyy HH:mm")</p>
+                        <p><strong>Order Status:</strong> <span class="badge bg-primary">@Model.OrderStatus</span></p>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <a asp-action="Dashboard" class="btn btn-secondary">Back to Dashboard</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Set the selected option based on the current order status
+        document.addEventListener('DOMContentLoaded', function() {
+            var select = document.querySelector('select[name="status"]');
+            var currentStatus = '@Model.OrderStatus';
+            for (var i = 0; i < select.options.length; i++) {
+                if (select.options[i].value === currentStatus) {
+                    select.selectedIndex = i;
+                    break;
+                }
+            }
+        });
+    </script>
+} 

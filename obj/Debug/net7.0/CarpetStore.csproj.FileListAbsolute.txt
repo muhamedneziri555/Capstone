@@ -765,6 +765,7 @@ C:\Users\Muhamed\OneDrive\Desktop\CarpetStore\obj\Debug\net7.0\CarpetStore.MvcAp
 C:\Users\Muhamed\OneDrive\Desktop\CarpetStore\obj\Debug\net7.0\CarpetStore.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\Muhamed\OneDrive\Desktop\CarpetStore\obj\Debug\net7.0\CarpetStore.RazorAssemblyInfo.cache
 C:\Users\Muhamed\OneDrive\Desktop\CarpetStore\obj\Debug\net7.0\CarpetStore.RazorAssemblyInfo.cs
+C:\Users\Muhamed\OneDrive\Desktop\CarpetStore\obj\Debug\net7.0\CarpetStore.sourcelink.json
 C:\Users\Muhamed\OneDrive\Desktop\CarpetStore\obj\Debug\net7.0\staticwebassets.build.json
 C:\Users\Muhamed\OneDrive\Desktop\CarpetStore\obj\Debug\net7.0\staticwebassets.development.json
 C:\Users\Muhamed\OneDrive\Desktop\CarpetStore\obj\Debug\net7.0\staticwebassets\msbuild.CarpetStore.Microsoft.AspNetCore.StaticWebAssets.props

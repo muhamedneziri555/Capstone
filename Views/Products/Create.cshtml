@@ -6,7 +6,8 @@
             <div class="card">
                 <div class="card-body">
                     <h2 class="text-center mb-4">Create New Product</h2>
-                    <div class="alert alert-info">
+                    <div class="mb-4 p-3" style="color: #1a73e8; border-left: 4px solid #1a73e8; background-color: #f8f9fa;">
+                        <i class="fas fa-info-circle me-2"></i>
                         <strong>Note:</strong> The product's category will be automatically set based on the first word of its name. 
                         For example, if you name a product "Acrylic Blue Carpet", it will be added to the "Acrylic Collection".
                     </div>
@@ -44,9 +45,13 @@
                             </div>
                         </div>
 
-                        <div class="form-group text-center">
-                            <button type="submit" class="btn btn-primary">Create</button>
-                            <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                        <div class="form-group text-center mt-4 d-flex justify-content-center gap-3">
+                            <button type="submit" class="btn btn-outline-primary px-4 py-2" style="border-radius: 25px; transition: all 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                                <i class="fas fa-plus-circle me-2"></i>Create Product
+                            </button>
+                            <a asp-action="Index" class="btn btn-outline-secondary px-4 py-2" style="border-radius: 25px; transition: all 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                                <i class="fas fa-arrow-left me-2"></i>Back to List
+                            </a>
                         </div>
                     </form>
                 </div>

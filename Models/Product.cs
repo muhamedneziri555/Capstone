@@ -8,5 +8,6 @@
         public string? ImageUrl { get; set; }
         public decimal Price { get; set; }
         public bool IsTrendingProduct { get; set; }
+        public string? Category { get; set; }
     }
 }

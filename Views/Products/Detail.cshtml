@@ -1,25 +1,32 @@
 ﻿@model Product
 
-<div class="container">
-    <div class="card-wrapper">
+<div style="margin-top: 100px; display: flex; flex-direction: column; align-items: center;">
+    <div style="width: 90%; max-width: 1000px; background: white; border-radius: 15px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); padding: 30px;">
         <div class="row align-items-center">
-            <div class="col-12 col-lg-6">
-                <div class="image-wrapper">
-                    <img src="@Model.ImageUrl" alt="Website Builder">
+            <div class="col-12 col-lg-5" style="display: flex; justify-content: center;">
+                <div style="width: 100%; max-width: 400px;">
+                    <img src="@Model.ImageUrl" alt="@Model.Name" 
+                         style="width: 100%; height: auto; border-radius: 10px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);"
+                         onerror="this.src='/images/no-image.png'">
                 </div>
             </div>
-            <div class="col-12 col-lg">
-                <div class="text-box">
-                    <h5 class="mbr-title">
-                        <strong>@Model.Name</strong>
-                    </h5>
-                    <p class="mbr-text">@Model.Detail</p>
-                    <div class="cost">
-                        <span class="currentcost">@Model.Price.ToString("c")</span>
+            <div class="col-12 col-lg-7" style="padding: 20px;">
+                <div style="text-align: center;">
+                    <h2 style="font-size: 2rem; font-weight: 600; margin-bottom: 20px; color: #333;">
+                        @Model.Name
+                    </h2>
+                    <p style="font-size: 1.1rem; color: #666; margin-bottom: 25px; line-height: 1.6;">
+                        @Model.Detail
+                    </p>
+                    <div style="margin-bottom: 30px;">
+                        <span style="font-size: 1.5rem; font-weight: 600; color: #2c3e50;">
+                            @Model.Price.ToString("C2")
+                        </span>
                     </div>
-                    <div class="mbr-section-btn pt-3">
-                        <a asp-controller="ShoppingCart" asp-action="AddToShoppingCart" asp-route-pId="@Model.Id" class="btn btn-primary">
-                            <span class="mbrib-cart-add mbr-iconfont mbr-iconfont-btn"></span>Add to cart
+                    <div>
+                        <a asp-controller="ShoppingCart" asp-action="AddToShoppingCart" asp-route-pId="@Model.Id" 
+                           class="btn btn-primary" style="padding: 10px 30px; font-size: 1.1rem; border-radius: 25px;">
+                            <i class="fas fa-shopping-cart" style="margin-right: 8px;"></i>Add to Cart
                         </a>
                     </div>
                 </div>
