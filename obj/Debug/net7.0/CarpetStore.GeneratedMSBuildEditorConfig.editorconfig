@@ -9,99 +9,99 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = CarpetStore
 build_property.RootNamespace = CarpetStore
-build_property.ProjectDir = c:\Users\Muhamed\OneDrive\Desktop\CarpetStore\
+build_property.ProjectDir = C:\Users\Muhamed\OneDrive\Desktop\CarpetStore\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 7.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = c:\Users\Muhamed\OneDrive\Desktop\CarpetStore
+build_property.MSBuildProjectDirectory = C:\Users\Muhamed\OneDrive\Desktop\CarpetStore
 build_property._RazorSourceGeneratorDebug = 
 
-[c:/Users/Muhamed/OneDrive/Desktop/CarpetStore/Views/Account/Login.cshtml]
+[C:/Users/Muhamed/OneDrive/Desktop/CarpetStore/Views/Account/Login.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxMb2dpbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/Muhamed/OneDrive/Desktop/CarpetStore/Views/Account/Register.cshtml]
+[C:/Users/Muhamed/OneDrive/Desktop/CarpetStore/Views/Account/Register.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxSZWdpc3Rlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/Muhamed/OneDrive/Desktop/CarpetStore/Views/Admin/Dashboard.cshtml]
+[C:/Users/Muhamed/OneDrive/Desktop/CarpetStore/Views/Admin/Dashboard.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRGFzaGJvYXJkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/Muhamed/OneDrive/Desktop/CarpetStore/Views/Admin/OrderDetails.cshtml]
+[C:/Users/Muhamed/OneDrive/Desktop/CarpetStore/Views/Admin/OrderDetails.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cT3JkZXJEZXRhaWxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/Muhamed/OneDrive/Desktop/CarpetStore/Views/Home/Index.cshtml]
+[C:/Users/Muhamed/OneDrive/Desktop/CarpetStore/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/Muhamed/OneDrive/Desktop/CarpetStore/Views/Home/Index1.cshtml]
+[C:/Users/Muhamed/OneDrive/Desktop/CarpetStore/Views/Home/Index1.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleDEuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/Muhamed/OneDrive/Desktop/CarpetStore/Views/Orders/Checkout.cshtml]
+[C:/Users/Muhamed/OneDrive/Desktop/CarpetStore/Views/Orders/Checkout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JkZXJzXENoZWNrb3V0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/Muhamed/OneDrive/Desktop/CarpetStore/Views/Orders/CheckoutComplete.cshtml]
+[C:/Users/Muhamed/OneDrive/Desktop/CarpetStore/Views/Orders/CheckoutComplete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JkZXJzXENoZWNrb3V0Q29tcGxldGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/Muhamed/OneDrive/Desktop/CarpetStore/Views/Products/AllProducts.cshtml]
+[C:/Users/Muhamed/OneDrive/Desktop/CarpetStore/Views/Products/AllProducts.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdHNcQWxsUHJvZHVjdHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/Muhamed/OneDrive/Desktop/CarpetStore/Views/Products/Category.cshtml]
+[C:/Users/Muhamed/OneDrive/Desktop/CarpetStore/Views/Products/Category.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdHNcQ2F0ZWdvcnkuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/Muhamed/OneDrive/Desktop/CarpetStore/Views/Products/Create.cshtml]
+[C:/Users/Muhamed/OneDrive/Desktop/CarpetStore/Views/Products/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdHNcQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/Muhamed/OneDrive/Desktop/CarpetStore/Views/Products/DebugCategories.cshtml]
+[C:/Users/Muhamed/OneDrive/Desktop/CarpetStore/Views/Products/DebugCategories.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdHNcRGVidWdDYXRlZ29yaWVzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/Muhamed/OneDrive/Desktop/CarpetStore/Views/Products/Delete.cshtml]
+[C:/Users/Muhamed/OneDrive/Desktop/CarpetStore/Views/Products/Delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdHNcRGVsZXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/Muhamed/OneDrive/Desktop/CarpetStore/Views/Products/Detail.cshtml]
+[C:/Users/Muhamed/OneDrive/Desktop/CarpetStore/Views/Products/Detail.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdHNcRGV0YWlsLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/Muhamed/OneDrive/Desktop/CarpetStore/Views/Products/Edit.cshtml]
+[C:/Users/Muhamed/OneDrive/Desktop/CarpetStore/Views/Products/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdHNcRWRpdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/Muhamed/OneDrive/Desktop/CarpetStore/Views/Products/Index.cshtml]
+[C:/Users/Muhamed/OneDrive/Desktop/CarpetStore/Views/Products/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdHNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/Muhamed/OneDrive/Desktop/CarpetStore/Views/Products/Shop.cshtml]
+[C:/Users/Muhamed/OneDrive/Desktop/CarpetStore/Views/Products/Shop.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdHNcU2hvcC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/Muhamed/OneDrive/Desktop/CarpetStore/Views/Shared/_Layout.cshtml]
+[C:/Users/Muhamed/OneDrive/Desktop/CarpetStore/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/Muhamed/OneDrive/Desktop/CarpetStore/Views/Shared/_ValidationScriptsPartial.cshtml]
+[C:/Users/Muhamed/OneDrive/Desktop/CarpetStore/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/Muhamed/OneDrive/Desktop/CarpetStore/Views/ShoppingCart/Index.cshtml]
+[C:/Users/Muhamed/OneDrive/Desktop/CarpetStore/Views/ShoppingCart/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hvcHBpbmdDYXJ0XEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/Muhamed/OneDrive/Desktop/CarpetStore/Views/_ViewImports.cshtml]
+[C:/Users/Muhamed/OneDrive/Desktop/CarpetStore/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/Users/Muhamed/OneDrive/Desktop/CarpetStore/Views/_ViewStart.cshtml]
+[C:/Users/Muhamed/OneDrive/Desktop/CarpetStore/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
