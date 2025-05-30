@@ -111,17 +111,53 @@ namespace CarpetStore.Controllers
         }
 
         [AllowAnonymous]
-        public IActionResult Category(string category)
+        public IActionResult Category(string category, string sortBy, string priceRange)
         {
+            if (string.IsNullOrEmpty(category))
+            {
+                return NotFound();
+            }
+
             var products = productRepository.GetAllProducts()
-                .Where(p => p.Name.StartsWith(category))
-                .ToList();
+                .Where(p => p.Name != null && p.Name.Split(' ')[0].Equals(category, StringComparison.OrdinalIgnoreCase))
+                .AsQueryable();
+
+            // Apply price range filter
+            if (!string.IsNullOrWhiteSpace(priceRange))
+            {
+                switch (priceRange)
+                {
+                    case "0-100":
+                        products = products.Where(p => p.Price <= 100);
+                        break;
+                    case "100-500":
+                        products = products.Where(p => p.Price > 100 && p.Price <= 500);
+                        break;
+                    case "500-1000":
+                        products = products.Where(p => p.Price > 500 && p.Price <= 1000);
+                        break;
+                    case "1000+":
+                        products = products.Where(p => p.Price > 1000);
+                        break;
+                }
+            }
+
+            // Apply sorting
+            products = sortBy switch
+            {
+                "price_asc" => products.OrderBy(p => p.Price),
+                "price_desc" => products.OrderByDescending(p => p.Price),
+                "name_asc" => products.OrderBy(p => p.Name),
+                "name_desc" => products.OrderByDescending(p => p.Name),
+                _ => products // Default to relevance (no specific sorting)
+            };
 
             ViewBag.Category = category;
-            ViewBag.DebugInfo = $"Found {products.Count} products in {category} Collection";
-            ViewBag.AllCategories = new[] { "Acrylic", "Persian", "Polyester", "Synthetic" };
+            ViewBag.SortBy = sortBy;
+            ViewBag.PriceRange = priceRange;
+            ViewBag.DebugInfo = $"Found {products.Count()} products in {category} Collection";
 
-            return View(products);
+            return View(products.ToList());
         }
 
         [AllowAnonymous]
