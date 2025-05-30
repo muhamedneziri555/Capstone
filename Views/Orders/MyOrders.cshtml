@@ -1,0 +1,74 @@
+@model IEnumerable<CarpetStore.Models.Order>
+
+@{
+    ViewData["Title"] = "My Orders";
+}
+
+<div style="margin-top: 100px; padding: 20px;">
+    <h2 style="text-align: center; font-size: 2rem; font-weight: 600; margin-bottom: 40px; color: #b8860b;">My Orders</h2>
+
+    @if (!Model.Any())
+    {
+        <div class="text-center">
+            <p>You haven't placed any orders yet.</p>
+        </div>
+    }
+    else
+    {
+        foreach (var order in Model)
+        {
+            <div class="card mb-4" style="border-radius: 15px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                <div class="card-header" style="background-color: #f8f9fa; border-radius: 15px 15px 0 0; padding: 15px;">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5 class="mb-0">Order #@order.Id</h5>
+                            <small class="text-muted">Placed on @order.OrderDate.ToString("MMM dd, yyyy")</small>
+                        </div>
+                        <div class="col-md-6 text-md-end">
+                            <span class="badge @(order.OrderStatus == "Delivered" ? "bg-success" : 
+                                              order.OrderStatus == "Processing" ? "bg-warning" : 
+                                              "bg-info")" style="font-size: 1rem; padding: 8px 15px;">
+                                @order.OrderStatus
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            @foreach (var detail in order.OrderDetails)
+                            {
+                                <div class="d-flex align-items-center mb-3">
+                                    <img src="@detail.Product.ImageUrl" alt="@detail.Product.Name" 
+                                         style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px; margin-right: 15px;"
+                                         onerror="this.src='/images/no-image.png'">
+                                    <div>
+                                        <h6 class="mb-1">@detail.Product.Name</h6>
+                                        <p class="mb-1">Quantity: @detail.Quantity</p>
+                                        <p class="mb-0">Price: @detail.Price.ToString("C2")</p>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card" style="background-color: #f8f9fa; border-radius: 10px;">
+                                <div class="card-body">
+                                    <h6 class="card-title">Order Summary</h6>
+                                    <p class="mb-1">Total Items: @order.OrderDetails.Sum(d => d.Quantity)</p>
+                                    <p class="mb-1">Total Amount: @order.OrderTotal.ToString("C2")</p>
+                                    <p class="mb-0">Status: @order.OrderStatus</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>
+
+<style>
+    .badge {
+        border-radius: 20px;
+    }
+</style> 
