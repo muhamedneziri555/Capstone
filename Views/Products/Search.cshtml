@@ -1,0 +1,123 @@
+@model IEnumerable<CarpetStore.Models.Product>
+
+@{
+    ViewData["Title"] = "Search Results";
+    var sortBy = ViewBag.SortBy as string ?? "relevance";
+    var priceRange = ViewBag.PriceRange as string ?? "";
+    var category = ViewBag.Category as string ?? "";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center mb-5">
+            <h2 class="display-4 mb-4" style="color: #b8860b; font-weight: 600;">Search Products</h2>
+            
+            <form asp-action="Search" method="get" class="mb-4">
+                <div class="input-group input-group-lg shadow-sm mb-3">
+                    <input type="text" name="searchTerm" class="form-control border-end-0" placeholder="Search products..." value="@ViewBag.SearchTerm" style="border-radius: 30px 0 0 30px;">
+                    <button type="submit" class="btn btn-primary px-4" style="border-radius: 0 30px 30px 0; background-color: #b8860b; border-color: #b8860b;">
+                        <span class="mobi-mbri mobi-mbri-search mbr-iconfont mbr-iconfont-btn"></span>
+                        Search
+                    </button>
+                </div>
+
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <select name="sortBy" class="form-select" style="border-radius: 20px;">
+                            <option value="relevance" selected="@(sortBy == "relevance")">Most Relevant</option>
+                            <option value="price_asc" selected="@(sortBy == "price_asc")">Price: Low to High</option>
+                            <option value="price_desc" selected="@(sortBy == "price_desc")">Price: High to Low</option>
+                            <option value="name_asc" selected="@(sortBy == "name_asc")">Name: A to Z</option>
+                            <option value="name_desc" selected="@(sortBy == "name_desc")">Name: Z to A</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <select name="priceRange" class="form-select" style="border-radius: 20px;">
+                            <option value="">All Prices</option>
+                            <option value="0-100" selected="@(priceRange == "0-100")">Under $100</option>
+                            <option value="100-500" selected="@(priceRange == "100-500")">$100 - $500</option>
+                            <option value="500-1000" selected="@(priceRange == "500-1000")">$500 - $1000</option>
+                            <option value="1000+" selected="@(priceRange == "1000+")">Over $1000</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <select name="category" class="form-select" style="border-radius: 20px;">
+                            <option value="">All Categories</option>
+                            <option value="Acrylic Collection" selected="@(category == "Acrylic Collection")">Acrylic Collection</option>
+                            <option value="Persian Collection" selected="@(category == "Persian Collection")">Persian Collection</option>
+                            <option value="Polyester Collection" selected="@(category == "Polyester Collection")">Polyester Collection</option>
+                            <option value="Synthetic Collection" selected="@(category == "Synthetic Collection")">Synthetic Collection</option>
+                            <option value="Kids Collection" selected="@(category == "Kids Collection")">Kids Collection</option>
+                        </select>
+                    </div>
+                </div>
+            </form>
+
+            @if (!string.IsNullOrEmpty(ViewBag.SearchTerm))
+            {
+                <p class="lead text-muted">Showing results for: <strong style="color: #b8860b;">@ViewBag.SearchTerm</strong></p>
+            }
+        </div>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="text-center" style="color: #0d6efd;">
+                    <i class="mobi-mbri mobi-mbri-info mbr-iconfont mbr-iconfont-btn mb-2" style="font-size: 2rem;"></i>
+                    <p class="mb-0">No products found matching your search criteria.</p>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row justify-content-center">
+            @foreach (var product in Model)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 shadow-sm" style="border-radius: 15px; transition: transform 0.3s ease;">
+                        <div class="card-img-wrapper" style="height: 250px; overflow: hidden; border-radius: 15px 15px 0 0;">
+                            @if (!string.IsNullOrEmpty(product.ImageUrl))
+                            {
+                                <img src="@product.ImageUrl" class="card-img-top h-100 w-100" alt="@product.Name" style="object-fit: cover;">
+                            }
+                        </div>
+                        <div class="card-body text-center">
+                            <h5 class="card-title mb-3" style="color: #b8860b; font-weight: 600;">@product.Name</h5>
+                            <p class="card-text text-muted mb-3">@product.Detail</p>
+                            <p class="card-text mb-4"><strong style="color: #b8860b; font-size: 1.2rem;">$@product.Price.ToString("F2")</strong></p>
+                            <a asp-action="Detail" asp-route-id="@product.Id" class="btn btn-primary px-4" style="border-radius: 25px; background-color: #b8860b; border-color: #b8860b;">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+<style>
+    .card:hover {
+        transform: translateY(-5px);
+    }
+    
+    .input-group .form-control:focus {
+        box-shadow: none;
+        border-color: #b8860b;
+    }
+    
+    .btn-primary:hover {
+        background-color: #9b6f0a !important;
+        border-color: #9b6f0a !important;
+    }
+
+    .form-select:focus {
+        border-color: #b8860b;
+        box-shadow: none;
+    }
+
+    .form-select {
+        border-color: #e9ecef;
+    }
+</style> 
