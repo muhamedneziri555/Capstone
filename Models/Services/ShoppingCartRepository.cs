@@ -27,22 +27,25 @@ namespace CarpetStore.Models.Services
 		}
 
 
-		public void AddToCart(Product product)
+		public void AddToCart(Product product, string selectedSize, decimal unitPrice)
 		{
-			var shoppingCartItem = dbContext.ShoppingCartItems.FirstOrDefault(s => s.Product.Id == product.Id && s.ShoppingCartId == ShoppingCartId);
+			var shoppingCartItem = dbContext.ShoppingCartItems.FirstOrDefault(s => s.Product.Id == product.Id && s.ShoppingCartId == ShoppingCartId && s.SelectedSize == selectedSize);
 			if (shoppingCartItem == null)
 			{
 				shoppingCartItem = new ShoppingCartItem
 				{
 					ShoppingCartId = ShoppingCartId,
 					Product = product,
-					Qty = 1
+					Qty = 1,
+					SelectedSize = selectedSize,
+					UnitPrice = unitPrice
 				};
 				dbContext.ShoppingCartItems.Add(shoppingCartItem);
 			}
 			else
 			{
 				shoppingCartItem.Qty++;
+				shoppingCartItem.UnitPrice = unitPrice;
 			}
 			dbContext.SaveChanges();
 		}
@@ -63,14 +66,14 @@ namespace CarpetStore.Models.Services
 		public decimal GetShoppingCartTotal()
 		{
 			var totalCost = dbContext.ShoppingCartItems.Where(s => s.ShoppingCartId == ShoppingCartId)
-				  .Select(s => s.Product.Price * s.Qty).Sum();
+				  .Select(s => s.UnitPrice * s.Qty).Sum();
 			return totalCost;
 		}
 
-		public int RemoveFromCart(Product product)
+		public int RemoveFromCart(Product product, string? selectedSize = null)
 		{
 			{
-				var shoppingCartItem = dbContext.ShoppingCartItems.FirstOrDefault(s => s.Product.Id == product.Id && s.ShoppingCartId == ShoppingCartId);
+				var shoppingCartItem = dbContext.ShoppingCartItems.FirstOrDefault(s => s.Product.Id == product.Id && s.ShoppingCartId == ShoppingCartId && (selectedSize == null || s.SelectedSize == selectedSize));
 				var quantity = 0;
 
 				if (shoppingCartItem != null)

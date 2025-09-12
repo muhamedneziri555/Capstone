@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CarpetStore.Models
 {
@@ -41,6 +42,7 @@ namespace CarpetStore.Models
         [Required]
         public string OrderStatus { get; set; }
         
+        [Column(TypeName = "decimal(18,2)")]
         public decimal OrderTotal { get; set; }
         
         public List<OrderDetail> OrderDetails { get; set; }

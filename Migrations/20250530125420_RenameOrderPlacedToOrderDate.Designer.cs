@@ -4,6 +4,7 @@ using CarpetStore.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CarpetStore.Migrations
 {
     [DbContext(typeof(CarpetStoreWebDb))]
-    partial class CarpetStoreWebDbModelSnapshot : ModelSnapshot
+    [Migration("20250530125420_RenameOrderPlacedToOrderDate")]
+    partial class RenameOrderPlacedToOrderDate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -91,45 +94,6 @@ namespace CarpetStore.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("CarpetStore.Models.Category", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Categories");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Acrylic"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Persian"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Polyester"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Name = "Synthetic"
-                        });
-                });
-
             modelBuilder.Entity("CarpetStore.Models.Order", b =>
                 {
                     b.Property<int>("Id")
@@ -205,9 +169,6 @@ namespace CarpetStore.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<string>("Size")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("OrderDetailId");
 
                     b.HasIndex("OrderId");
@@ -243,18 +204,6 @@ namespace CarpetStore.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal?>("Price120x170")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal?>("Price150x220")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal?>("Price200x290")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("Stock")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.ToTable("Products");
@@ -267,8 +216,7 @@ namespace CarpetStore.Migrations
                             ImageUrl = "https://fe3b71.cdn.akinoncloud.com/products/2023/06/02/441/51c2d295-dd5a-4151-ac51-e1ff7752a9b7_size1024x1319.jpg",
                             IsTrendingProduct = true,
                             Name = "Acrylic Agra",
-                            Price = 120m,
-                            Stock = 0
+                            Price = 120m
                         },
                         new
                         {
@@ -277,8 +225,7 @@ namespace CarpetStore.Migrations
                             ImageUrl = "https://fe3b71.cdn.akinoncloud.com/products/2023/06/05/678/d5f7b5a8-59f4-4d75-b378-e57676221162_size1024x1319.jpg",
                             IsTrendingProduct = true,
                             Name = "Acrylic Bilbao",
-                            Price = 180m,
-                            Stock = 0
+                            Price = 180m
                         },
                         new
                         {
@@ -287,8 +234,7 @@ namespace CarpetStore.Migrations
                             ImageUrl = "https://fe3b71.cdn.akinoncloud.com/products/2023/06/02/1154/0a883a2d-25b2-454c-b3c3-01a345f50191_size1024x1319.jpg",
                             IsTrendingProduct = true,
                             Name = "Acrylic Contour",
-                            Price = 140m,
-                            Stock = 0
+                            Price = 140m
                         },
                         new
                         {
@@ -297,8 +243,7 @@ namespace CarpetStore.Migrations
                             ImageUrl = "https://fe3b71.cdn.akinoncloud.com/products/2023/06/02/1151/d860dcf9-00ca-4a38-8c47-5f6570edae6c_size1024x1319.jpg",
                             IsTrendingProduct = true,
                             Name = "Acrylic Dulce",
-                            Price = 220m,
-                            Stock = 0
+                            Price = 220m
                         },
                         new
                         {
@@ -307,8 +252,7 @@ namespace CarpetStore.Migrations
                             ImageUrl = "https://fe3b71.cdn.akinoncloud.com/products/2023/06/02/256/39ba5cc4-6a38-4c7a-8079-ecc3ab2fe929_size1024x1319.jpg",
                             IsTrendingProduct = true,
                             Name = "Acrylic Kids",
-                            Price = 89m,
-                            Stock = 0
+                            Price = 89m
                         },
                         new
                         {
@@ -317,8 +261,7 @@ namespace CarpetStore.Migrations
                             ImageUrl = "https://fe3b71.cdn.akinoncloud.com/products/2023/11/20/3382/5ef2b90e-4527-440f-87b0-a84240087ae2_size1024x1319.jpg",
                             IsTrendingProduct = true,
                             Name = "Acrylic Ibiza",
-                            Price = 320m,
-                            Stock = 0
+                            Price = 320m
                         },
                         new
                         {
@@ -327,8 +270,7 @@ namespace CarpetStore.Migrations
                             ImageUrl = "https://fe3b71.cdn.akinoncloud.com/products/2023/06/05/2620/55e4d03a-d072-4fae-952f-86d89466bbef_size1024x1319.jpg",
                             IsTrendingProduct = true,
                             Name = "Acrylic Pena",
-                            Price = 425m,
-                            Stock = 0
+                            Price = 425m
                         },
                         new
                         {
@@ -337,8 +279,7 @@ namespace CarpetStore.Migrations
                             ImageUrl = "https://fe3b71.cdn.akinoncloud.com/products/2023/06/05/2620/55e4d03a-d072-4fae-952f-86d89466bbef_size1024x1319.jpg",
                             IsTrendingProduct = true,
                             Name = "Acrylic Milano",
-                            Price = 280m,
-                            Stock = 0
+                            Price = 280m
                         });
                 });
 
@@ -356,14 +297,8 @@ namespace CarpetStore.Migrations
                     b.Property<int>("Qty")
                         .HasColumnType("int");
 
-                    b.Property<string>("SelectedSize")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("ShoppingCartId")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("UnitPrice")
-                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 

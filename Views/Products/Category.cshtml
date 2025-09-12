@@ -1,7 +1,13 @@
 @model List<CarpetStore.Models.Product>
 
+@{
+    var sortBy = ViewBag.SortBy as string ?? "relevance";
+    var priceRange = ViewBag.PriceRange as string ?? "";
+    var currentCategory = ViewBag.Category as string ?? "";
+}
+
 <div style="margin-top: 100px; padding: 20px;">
-    <h2 style="text-align: center; font-size: 2rem; font-weight: 600; margin-bottom: 40px; color: #b8860b;">@ViewBag.Category Collection</h2>
+    <h2 style="text-align: center; font-size: 2rem; font-weight: 600; margin-bottom: 40px; color: #b8860b;">@currentCategory Collection</h2>
 
     @if (ViewBag.DebugInfo != null)
     {
@@ -9,6 +15,34 @@
             <p style="font-size: 1.1rem;">@ViewBag.DebugInfo</p>
         </div>
     }
+
+    <div class="row justify-content-center mb-5">
+        <div class="col-md-8">
+            <form asp-action="Category" method="get" class="mb-4">
+                <input type="hidden" name="category" value="@currentCategory" />
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <select name="sortBy" class="form-select" style="border-radius: 20px;" onchange="this.form.submit()">
+                            <option value="relevance" selected="@(sortBy == "relevance")">Most Relevant</option>
+                            <option value="price_asc" selected="@(sortBy == "price_asc")">Price: Low to High</option>
+                            <option value="price_desc" selected="@(sortBy == "price_desc")">Price: High to Low</option>
+                            <option value="name_asc" selected="@(sortBy == "name_asc")">Name: A to Z</option>
+                            <option value="name_desc" selected="@(sortBy == "name_desc")">Name: Z to A</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <select name="priceRange" class="form-select" style="border-radius: 20px;" onchange="this.form.submit()">
+                            <option value="">All Prices</option>
+                            <option value="0-100" selected="@(priceRange == "0-100")">Under $100</option>
+                            <option value="100-500" selected="@(priceRange == "100-500")">$100 - $500</option>
+                            <option value="500-1000" selected="@(priceRange == "500-1000")">$500 - $1000</option>
+                            <option value="1000+" selected="@(priceRange == "1000+")">Over $1000</option>
+                        </select>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <div class="row" style="justify-content: center;">
         @if (Model.Any())
@@ -50,4 +84,15 @@
             </div>
         }
     </div>
-</div> 
+</div>
+
+<style>
+    .form-select:focus {
+        border-color: #b8860b;
+        box-shadow: none;
+    }
+
+    .form-select {
+        border-color: #e9ecef;
+    }
+</style> 

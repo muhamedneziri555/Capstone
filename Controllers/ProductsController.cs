@@ -4,6 +4,7 @@ using CarpetStore.Models.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
+using System;
 
 namespace CarpetStore.Controllers
 {
@@ -11,9 +12,11 @@ namespace CarpetStore.Controllers
     public class ProductsController : Controller
     {
         private IProductRepository productRepository;
-        public ProductsController(IProductRepository productRepository)
+        private CarpetStore.Data.CarpetStoreWebDb _db;
+        public ProductsController(IProductRepository productRepository, CarpetStore.Data.CarpetStoreWebDb db)
         {
             this.productRepository = productRepository;
+            this._db = db;
         }
         [AllowAnonymous]
         public IActionResult Shop()
@@ -34,12 +37,14 @@ namespace CarpetStore.Controllers
         public IActionResult Index()
         {
             var products = productRepository.GetAllProducts();
+            ViewBag.Categories = _db?.Categories?.OrderBy(c => c.Name).ToList() ?? new List<Category>();
             return View(products.ToList());
         }
 
         [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
+            ViewBag.Categories = _db?.Categories?.OrderBy(c => c.Name).ToList() ?? new List<Category>();
             return View();
         }
 
@@ -66,6 +71,7 @@ namespace CarpetStore.Controllers
                 return NotFound(); // Or handle appropriately (e.g., redirect to an error page)
             }
 
+            ViewBag.Categories = _db?.Categories?.OrderBy(c => c.Name).ToList() ?? new List<Category>();
             return View(product);
         }
 
@@ -111,53 +117,80 @@ namespace CarpetStore.Controllers
         }
 
         [AllowAnonymous]
-        public IActionResult Category(string category, string sortBy, string priceRange)
+        public IActionResult Category(string category, string? sortBy = "relevance", string? priceRange = "")
         {
-            if (string.IsNullOrEmpty(category))
+            if (string.IsNullOrWhiteSpace(category))
             {
-                return NotFound();
+                return RedirectToAction("AllProducts");
             }
 
-            var products = productRepository.GetAllProducts()
-                .Where(p => p.Name != null && p.Name.Split(' ')[0].Equals(category, StringComparison.OrdinalIgnoreCase))
-                .AsQueryable();
+            var query = productRepository.GetAllProducts().AsQueryable();
 
-            // Apply price range filter
+            // Normalize category and derive leading name token (e.g., "Persian" from "Persian Collection")
+            var normalizedCategory = (category ?? string.Empty).Trim();
+            var leadingToken = normalizedCategory;
+            var collectionSuffixIndex = normalizedCategory.IndexOf(" ");
+            if (collectionSuffixIndex > 0)
+            {
+                leadingToken = normalizedCategory.Substring(0, collectionSuffixIndex);
+            }
+            var leadingLower = leadingToken.ToLower();
+
+            // Filter by either exact Category field OR first-word prefix from Name
+            query = query.Where(p =>
+                (p.Category != null && p.Category == normalizedCategory) ||
+                (p.Name != null && p.Name.ToLower().StartsWith(leadingLower))
+            );
+
+            // Price filtering
             if (!string.IsNullOrWhiteSpace(priceRange))
             {
-                switch (priceRange)
+                if (priceRange.Contains("-"))
                 {
-                    case "0-100":
-                        products = products.Where(p => p.Price <= 100);
-                        break;
-                    case "100-500":
-                        products = products.Where(p => p.Price > 100 && p.Price <= 500);
-                        break;
-                    case "500-1000":
-                        products = products.Where(p => p.Price > 500 && p.Price <= 1000);
-                        break;
-                    case "1000+":
-                        products = products.Where(p => p.Price > 1000);
-                        break;
+                    var parts = priceRange.Split('-', StringSplitOptions.RemoveEmptyEntries);
+                    if (parts.Length == 2 && decimal.TryParse(parts[0], out var min) && decimal.TryParse(parts[1], out var max))
+                    {
+                        query = query.Where(p => p.Price >= min && p.Price <= max);
+                    }
+                }
+                else if (priceRange.EndsWith("+"))
+                {
+                    var number = priceRange.TrimEnd('+');
+                    if (decimal.TryParse(number, out var minOnly))
+                    {
+                        query = query.Where(p => p.Price >= minOnly);
+                    }
                 }
             }
 
-            // Apply sorting
-            products = sortBy switch
+            // Sorting
+            switch (sortBy)
             {
-                "price_asc" => products.OrderBy(p => p.Price),
-                "price_desc" => products.OrderByDescending(p => p.Price),
-                "name_asc" => products.OrderBy(p => p.Name),
-                "name_desc" => products.OrderByDescending(p => p.Name),
-                _ => products // Default to relevance (no specific sorting)
-            };
+                case "price_asc":
+                    query = query.OrderBy(p => p.Price);
+                    break;
+                case "price_desc":
+                    query = query.OrderByDescending(p => p.Price);
+                    break;
+                case "name_asc":
+                    query = query.OrderBy(p => p.Name);
+                    break;
+                case "name_desc":
+                    query = query.OrderByDescending(p => p.Name);
+                    break;
+                default:
+                    break;
+            }
+
+            var products = query.ToList();
 
             ViewBag.Category = category;
             ViewBag.SortBy = sortBy;
             ViewBag.PriceRange = priceRange;
-            ViewBag.DebugInfo = $"Found {products.Count()} products in {category} Collection";
+            ViewBag.DebugInfo = $"Found {products.Count} products in {category}";
+            ViewBag.AllCategories = new[] { "Acrylic Collection", "Persian Collection", "Polyester Collection", "Synthetic Collection", "Kids Collection" };
 
-            return View(products.ToList());
+            return View(products);
         }
 
         [AllowAnonymous]
@@ -167,67 +200,124 @@ namespace CarpetStore.Controllers
             return View(products);
         }
 
+        [HttpGet]
         [AllowAnonymous]
-        public IActionResult Search(string searchTerm, string sortBy, string priceRange, string category)
+        public IActionResult Search(string? searchTerm, string? sortBy = "relevance", string? priceRange = "", string? category = "")
         {
-            var products = productRepository.GetAllProducts().AsQueryable();
+            var query = productRepository.GetAllProducts().AsQueryable();
 
-            // Apply search term filter
+            // Filter by search term
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
-                var searchTermLower = searchTerm.ToLower();
-                products = products.Where(p => 
-                    p.Name.ToLower().Contains(searchTermLower) || 
-                    p.Detail.ToLower().Contains(searchTermLower));
+                var lowered = searchTerm.Trim().ToLower();
+                query = query.Where(p =>
+                    (p.Name != null && p.Name.ToLower().Contains(lowered)) ||
+                    (p.Detail != null && p.Detail.ToLower().Contains(lowered))
+                );
             }
 
-            // Apply category filter
+            // Filter by category
             if (!string.IsNullOrWhiteSpace(category))
             {
-                // Extract the first word from the category (e.g., "Persian" from "Persian Collection")
-                var categoryFirstWord = category.Split(' ')[0].ToLower();
-                products = products.Where(p => p.Name.ToLower().StartsWith(categoryFirstWord));
+                query = query.Where(p => p.Category != null && p.Category == category);
             }
 
-            // Apply price range filter
+            // Filter by price range
             if (!string.IsNullOrWhiteSpace(priceRange))
             {
-                switch (priceRange)
+                if (priceRange.Contains("-"))
                 {
-                    case "0-100":
-                        products = products.Where(p => p.Price <= 100);
-                        break;
-                    case "100-500":
-                        products = products.Where(p => p.Price > 100 && p.Price <= 500);
-                        break;
-                    case "500-1000":
-                        products = products.Where(p => p.Price > 500 && p.Price <= 1000);
-                        break;
-                    case "1000+":
-                        products = products.Where(p => p.Price > 1000);
-                        break;
+                    var parts = priceRange.Split('-', StringSplitOptions.RemoveEmptyEntries);
+                    if (parts.Length == 2 && decimal.TryParse(parts[0], out var min) && decimal.TryParse(parts[1], out var max))
+                    {
+                        query = query.Where(p => p.Price >= min && p.Price <= max);
+                    }
+                }
+                else if (priceRange.EndsWith("+"))
+                {
+                    var number = priceRange.TrimEnd('+');
+                    if (decimal.TryParse(number, out var minOnly))
+                    {
+                        query = query.Where(p => p.Price >= minOnly);
+                    }
                 }
             }
 
-            // Apply sorting
-            products = sortBy switch
+            // Sorting
+            switch (sortBy)
             {
-                "price_asc" => products.OrderBy(p => p.Price),
-                "price_desc" => products.OrderByDescending(p => p.Price),
-                "name_asc" => products.OrderBy(p => p.Name),
-                "name_desc" => products.OrderByDescending(p => p.Name),
-                _ => products // Default to relevance (no specific sorting)
-            };
+                case "price_asc":
+                    query = query.OrderBy(p => p.Price);
+                    break;
+                case "price_desc":
+                    query = query.OrderByDescending(p => p.Price);
+                    break;
+                case "name_asc":
+                    query = query.OrderBy(p => p.Name);
+                    break;
+                case "name_desc":
+                    query = query.OrderByDescending(p => p.Name);
+                    break;
+                default:
+                    // relevance or unknown -> keep current ordering
+                    break;
+            }
 
-            // Store filter values in ViewBag for maintaining state
             ViewBag.SearchTerm = searchTerm;
             ViewBag.SortBy = sortBy;
             ViewBag.PriceRange = priceRange;
             ViewBag.Category = category;
 
-            return View(products.ToList());
+            var results = query.ToList();
+            return View(results);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public IActionResult CreateCategory(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                TempData["Error"] = "Category name is required.";
+                return RedirectToAction("Index");
+            }
+
+            if (_db.Categories.Any(c => c.Name == name))
+            {
+                TempData["Error"] = "Category already exists.";
+                return RedirectToAction("Index");
+            }
+
+            _db.Categories.Add(new Category { Name = name });
+            _db.SaveChanges();
+            TempData["Success"] = "Category created.";
+            return RedirectToAction("Index");
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public IActionResult DeleteCategory(int id)
+        {
+            var category = _db.Categories.Find(id);
+            if (category == null)
+            {
+                TempData["Error"] = "Category not found.";
+                return RedirectToAction("Index");
+            }
+
+            // Check if any products are using this category
+            var productsUsingCategory = _db.Products.Any(p => p.Category == category.Name);
+            if (productsUsingCategory)
+            {
+                TempData["Error"] = $"Cannot delete '{category.Name}' category. It is being used by products.";
+                return RedirectToAction("Index");
+            }
+
+            _db.Categories.Remove(category);
+            _db.SaveChanges();
+            TempData["Success"] = $"Category '{category.Name}' deleted successfully.";
+            return RedirectToAction("Index");
         }
     }
-
 }
 

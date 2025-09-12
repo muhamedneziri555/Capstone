@@ -1,0 +1,66 @@
+@{
+    ViewData["Title"] = "Order Reports";
+}
+
+<div style="margin-top: 100px; display: flex; flex-direction: column; align-items: center;">
+    <h5 class="mbr-section-subtitle mbr-fonts-style align-center mb-0 mt-2 display-5" style="text-align: center; font-size: 2rem; font-weight: 600;">Order Reports Dashboard</h5>
+
+    <div class="row" style="width: 80%; margin: 0 auto; text-align: center;">
+        <!-- Daily Report Card -->
+        <div class="col-md-6 col-lg-3 mb-4">
+            <div class="card h-100 shadow-sm border-0" style="background-color: #ffffff; border: 1px solid #e9ecef;">
+                <div class="card-body text-center">
+                    <i class="fas fa-calendar-day fa-3x mb-3" style="color: #b8860b;"></i>
+                    <h5 class="mbr-section-subtitle mbr-fonts-style display-5" style="color: #232323; font-weight: 600; font-size: 1.2rem;">Daily Report</h5>
+                    <p class="mbr-text mbr-fonts-style display-7" style="color: #232323; font-size: 0.9rem;">View today's orders and sales performance</p>
+                    <a asp-action="Daily" class="btn btn-sm" style="border-radius: 8px; font-weight: 500; background-color: #b8860b; border-color: #b8860b; color: white; transition: all 0.3s ease;"
+                       onmouseover="this.style.backgroundColor='#9a6f08'; this.style.borderColor='#9a6f08'; this.style.transform='translateY(-1px)'"
+                       onmouseout="this.style.backgroundColor='#b8860b'; this.style.borderColor='#b8860b'; this.style.transform='translateY(0)'">View Report</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Weekly Report Card -->
+        <div class="col-md-6 col-lg-3 mb-4">
+            <div class="card h-100 shadow-sm border-0" style="background-color: #ffffff; border: 1px solid #e9ecef;">
+                <div class="card-body text-center">
+                    <i class="fas fa-calendar-week fa-3x mb-3" style="color: #b8860b;"></i>
+                    <h5 class="mbr-section-subtitle mbr-fonts-style display-5" style="color: #232323; font-weight: 600; font-size: 1.2rem;">Weekly Report</h5>
+                    <p class="mbr-text mbr-fonts-style display-7" style="color: #232323; font-size: 0.9rem;">Analyze this week's sales trends</p>
+                    <a asp-action="Weekly" class="btn btn-sm" style="border-radius: 8px; font-weight: 500; background-color: #b8860b; border-color: #b8860b; color: white; transition: all 0.3s ease;"
+                       onmouseover="this.style.backgroundColor='#9a6f08'; this.style.borderColor='#9a6f08'; this.style.transform='translateY(-1px)'"
+                       onmouseout="this.style.backgroundColor='#b8860b'; this.style.borderColor='#b8860b'; this.style.transform='translateY(0)'">View Report</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Monthly Report Card -->
+        <div class="col-md-6 col-lg-3 mb-4">
+            <div class="card h-100 shadow-sm border-0" style="background-color: #ffffff; border: 1px solid #e9ecef;">
+                <div class="card-body text-center">
+                    <i class="fas fa-calendar-alt fa-3x mb-3" style="color: #b8860b;"></i>
+                    <h5 class="mbr-section-subtitle mbr-fonts-style display-5" style="color: #232323; font-weight: 600; font-size: 1.2rem;">Monthly Report</h5>
+                    <p class="mbr-text mbr-fonts-style display-7" style="color: #232323; font-size: 0.9rem;">Comprehensive monthly analysis</p>
+                    <a asp-action="Monthly" class="btn btn-sm" style="border-radius: 8px; font-weight: 500; background-color: #b8860b; border-color: #b8860b; color: white; transition: all 0.3s ease;"
+                       onmouseover="this.style.backgroundColor='#9a6f08'; this.style.borderColor='#9a6f08'; this.style.transform='translateY(-1px)'"
+                       onmouseout="this.style.backgroundColor='#b8860b'; this.style.borderColor='#b8860b'; this.style.transform='translateY(0)'">View Report</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Custom Report Card -->
+        <div class="col-md-6 col-lg-3 mb-4">
+            <div class="card h-100 shadow-sm border-0" style="background-color: #ffffff; border: 1px solid #e9ecef;">
+                <div class="card-body text-center">
+                    <i class="fas fa-chart-line fa-3x mb-3" style="color: #b8860b;"></i>
+                    <h5 class="mbr-section-subtitle mbr-fonts-style display-5" style="color: #232323; font-weight: 600; font-size: 1.2rem;">Custom Report</h5>
+                    <p class="mbr-text mbr-fonts-style display-7" style="color: #232323; font-size: 0.9rem;">Create custom date range reports</p>
+                    <a asp-action="Custom" class="btn btn-sm" style="border-radius: 8px; font-weight: 500; background-color: #b8860b; border-color: #b8860b; color: white; transition: all 0.3s ease;"
+                       onmouseover="this.style.backgroundColor='#9a6f08'; this.style.borderColor='#9a6f08'; this.style.transform='translateY(-1px)'"
+                       onmouseout="this.style.backgroundColor='#b8860b'; this.style.borderColor='#b8860b'; this.style.transform='translateY(0)'">View Report</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

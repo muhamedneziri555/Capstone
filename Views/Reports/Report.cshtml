@@ -1,0 +1,285 @@
+@model CarpetStore.ViewModels.OrderReportViewModel
+@{
+    ViewData["Title"] = $"{Model.ReportType} Order Report";
+}
+
+<div style="margin-top: 100px; display: flex; flex-direction: column; align-items: center;">
+    <!-- Header Section -->
+    <div style="width: 80%; margin: 0 auto;">
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card shadow-sm border-0" style="background-color: #ffffff; border: 1px solid #e9ecef;">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h5 class="mbr-section-subtitle mbr-fonts-style display-5" style="color: #232323; font-weight: 600; margin: 0;">
+                                    @Model.ReportType Order Report
+                                </h5>
+                                <p class="mbr-text mbr-fonts-style display-7" style="color: #232323; margin: 0;">
+                                    @Model.StartDate.ToString("MMM dd, yyyy") - @Model.EndDate.ToString("MMM dd, yyyy")
+                                </p>
+                            </div>
+                            <div>
+                                <a asp-action="Index" class="btn" style="border-radius: 8px; font-weight: 500; background-color: #f8f9fa; border: 1px solid #e9ecef; color: #232323; transition: all 0.3s ease;"
+                                   onmouseover="this.style.backgroundColor='#b8860b'; this.style.borderColor='#b8860b'; this.style.color='white'; this.style.transform='translateY(-1px)'"
+                                   onmouseout="this.style.backgroundColor='#f8f9fa'; this.style.borderColor='#e9ecef'; this.style.color='#232323'; this.style.transform='translateY(0)'">
+                                    Back to Reports
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Key Metrics Cards -->
+        <div class="row mb-4">
+            <div class="col-md-3 mb-3">
+                <div class="card text-center shadow-sm border-0" style="background-color: #ffffff; border: 1px solid #e9ecef;">
+                    <div class="card-body">
+                        <i class="fas fa-shopping-cart fa-2x mb-2" style="color: #b8860b;"></i>
+                        <h3 class="mbr-section-subtitle mbr-fonts-style display-5" style="color: #232323; font-weight: 600;">@Model.TotalOrders</h3>
+                        <p class="mbr-text mbr-fonts-style display-7" style="color: #232323;">Total Orders</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card text-center shadow-sm border-0" style="background-color: #ffffff; border: 1px solid #e9ecef;">
+                    <div class="card-body">
+                        <i class="fas fa-dollar-sign fa-2x mb-2" style="color: #b8860b;"></i>
+                        <h3 class="mbr-section-subtitle mbr-fonts-style display-5" style="color: #232323; font-weight: 600;">@Model.TotalRevenue.ToString("C2")</h3>
+                        <p class="mbr-text mbr-fonts-style display-7" style="color: #232323;">Total Revenue</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card text-center shadow-sm border-0" style="background-color: #ffffff; border: 1px solid #e9ecef;">
+                    <div class="card-body">
+                        <i class="fas fa-chart-line fa-2x mb-2" style="color: #b8860b;"></i>
+                        <h3 class="mbr-section-subtitle mbr-fonts-style display-5" style="color: #232323; font-weight: 600;">@Model.AverageOrderValue.ToString("C2")</h3>
+                        <p class="mbr-text mbr-fonts-style display-7" style="color: #232323;">Average Order Value</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card text-center shadow-sm border-0" style="background-color: #ffffff; border: 1px solid #e9ecef;">
+                    <div class="card-body">
+                        <i class="fas fa-percentage fa-2x mb-2" style="color: #b8860b;"></i>
+                        <h3 class="mbr-section-subtitle mbr-fonts-style display-5" style="color: #232323; font-weight: 600;">@((Model.TotalOrders > 0 ? (double)Model.Orders.Count(o => o.OrderStatus == "Completed" || o.OrderStatus == "Delivered") / Model.TotalOrders * 100 : 0).ToString("F1"))%</h3>
+                        <p class="mbr-text mbr-fonts-style display-7" style="color: #232323;">Completion Rate</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Order Trends Chart -->
+            <div class="col-lg-8 mb-4">
+                <div class="card shadow-sm border-0" style="background-color: #ffffff; border: 1px solid #e9ecef;">
+                    <div class="card-header" style="background-color: #f8f9fa; border-bottom: 1px solid #e9ecef;">
+                        <h5 class="mbr-section-subtitle mbr-fonts-style display-5 mb-0" style="color: #232323; font-weight: 600;">
+                            Order Trends
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="orderTrendsChart" height="300"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Status Distribution -->
+            <div class="col-lg-4 mb-4">
+                <div class="card shadow-sm border-0" style="background-color: #ffffff; border: 1px solid #e9ecef;">
+                    <div class="card-header" style="background-color: #f8f9fa; border-bottom: 1px solid #e9ecef;">
+                        <h5 class="mbr-section-subtitle mbr-fonts-style display-5 mb-0" style="color: #232323; font-weight: 600;">
+                            Order Status
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="statusChart" height="300"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Top Selling Products -->
+            <div class="col-lg-6 mb-4">
+                <div class="card shadow-sm border-0" style="background-color: #ffffff; border: 1px solid #e9ecef;">
+                    <div class="card-header" style="background-color: #f8f9fa; border-bottom: 1px solid #e9ecef;">
+                        <h5 class="mbr-section-subtitle mbr-fonts-style display-5 mb-0" style="color: #232323; font-weight: 600;">
+                            Top Selling Products
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th style="color: #232323; font-weight: 600;">Product</th>
+                                        <th style="color: #232323; font-weight: 600;">Category</th>
+                                        <th style="color: #232323; font-weight: 600;">Quantity</th>
+                                        <th style="color: #232323; font-weight: 600;">Revenue</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var product in Model.TopSellingProducts)
+                                    {
+                                        <tr>
+                                            <td style="color: #232323;">@product.ProductName</td>
+                                            <td><span class="badge" style="background-color: #b8860b; color: white;">@product.Category</span></td>
+                                            <td style="color: #232323;">@product.QuantitySold</td>
+                                            <td style="color: #232323;">@product.Revenue.ToString("C2")</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Orders -->
+            <div class="col-lg-6 mb-4">
+                <div class="card shadow-sm border-0" style="background-color: #ffffff; border: 1px solid #e9ecef;">
+                    <div class="card-header" style="background-color: #f8f9fa; border-bottom: 1px solid #e9ecef;">
+                        <h5 class="mbr-section-subtitle mbr-fonts-style display-5 mb-0" style="color: #232323; font-weight: 600;">
+                            Recent Orders
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th style="color: #232323; font-weight: 600;">Order #</th>
+                                        <th style="color: #232323; font-weight: 600;">Customer</th>
+                                        <th style="color: #232323; font-weight: 600;">Date</th>
+                                        <th style="color: #232323; font-weight: 600;">Status</th>
+                                        <th style="color: #232323; font-weight: 600;">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var order in Model.Orders.Take(10))
+                                    {
+                                        <tr>
+                                            <td style="color: #232323;">#@order.Id</td>
+                                            <td style="color: #232323;">@order.FirstName @order.LastName</td>
+                                            <td style="color: #232323;">@order.OrderDate.ToString("MMM dd, yyyy")</td>
+                                            <td>
+                                                <span class="badge @(order.OrderStatus == "Completed" ? "bg-success" : 
+                                                                    order.OrderStatus == "Pending" ? "bg-warning" : 
+                                                                    order.OrderStatus == "Cancelled" ? "bg-danger" : "bg-info")">
+                                                    @order.OrderStatus
+                                                </span>
+                                            </td>
+                                            <td style="color: #232323;">@order.OrderTotal.ToString("C2")</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Order Trends Chart
+        const orderTrendsCtx = document.getElementById('orderTrendsChart').getContext('2d');
+        const orderTrendsData = @Html.Raw(Json.Serialize(Model.OrderSummaries.Select(s => new { 
+            label = s.PeriodLabel, 
+            orders = s.OrderCount, 
+            revenue = s.Revenue 
+        })));
+
+        new Chart(orderTrendsCtx, {
+            type: 'line',
+            data: {
+                labels: orderTrendsData.map(d => d.label),
+                datasets: [{
+                    label: 'Orders',
+                    data: orderTrendsData.map(d => d.orders),
+                    borderColor: '#b8860b',
+                    backgroundColor: 'rgba(184, 134, 11, 0.1)',
+                    tension: 0.4,
+                    yAxisID: 'y'
+                }, {
+                    label: 'Revenue',
+                    data: orderTrendsData.map(d => d.revenue),
+                    borderColor: '#232323',
+                    backgroundColor: 'rgba(35, 35, 35, 0.1)',
+                    tension: 0.4,
+                    yAxisID: 'y1'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                        title: {
+                            display: true,
+                            text: 'Number of Orders'
+                        }
+                    },
+                    y1: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        title: {
+                            display: true,
+                            text: 'Revenue ($)'
+                        },
+                        grid: {
+                            drawOnChartArea: false,
+                        },
+                    }
+                }
+            }
+        });
+
+        // Status Distribution Chart
+        const statusCtx = document.getElementById('statusChart').getContext('2d');
+        const statusData = @Html.Raw(Json.Serialize(Model.StatusSummaries.Select(s => new { 
+            status = s.Status, 
+            count = s.Count, 
+            percentage = s.Percentage 
+        })));
+
+        new Chart(statusCtx, {
+            type: 'doughnut',
+            data: {
+                labels: statusData.map(d => d.status),
+                datasets: [{
+                    data: statusData.map(d => d.count),
+                    backgroundColor: [
+                        '#b8860b',
+                        '#232323',
+                        '#f8f9fa',
+                        '#e9ecef',
+                        '#ced4da'
+                    ],
+                    borderWidth: 2,
+                    borderColor: '#fff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+    </script>
+}

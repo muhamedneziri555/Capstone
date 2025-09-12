@@ -8,8 +8,9 @@
                     <h2 class="text-center mb-4">Create New Product</h2>
                     <div class="mb-4 p-3" style="color: #1a73e8; border-left: 4px solid #1a73e8; background-color: #f8f9fa;">
                         <i class="fas fa-info-circle me-2"></i>
-                        <strong>Note:</strong> The product's category will be automatically set based on the first word of its name. 
-                        For example, if you name a product "Acrylic Blue Carpet", it will be added to the "Acrylic Collection".
+                        <strong>Note:</strong> Select a category from the list or add a new collection name.
+                        <br />
+                        <strong>Pricing:</strong> Use <em>Price 120x170</em> as the default/base price.
                     </div>
                     <form asp-action="Create">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -27,15 +28,55 @@
                         </div>
 
                         <div class="form-group mb-3">
+                            <label asp-for="Category" class="control-label">Category</label>
+                            <select asp-for="Category" class="form-select">
+                                <option value="">-- Select Category --</option>
+                                @foreach (var category in (IEnumerable<CarpetStore.Models.Category>)ViewBag.Categories)
+                                {
+                                    <option value="@category.Name">@category.Name</option>
+                                }
+                            </select>
+                            <span asp-validation-for="Category" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
                             <label asp-for="ImageUrl" class="control-label">Image URL</label>
                             <input asp-for="ImageUrl" class="form-control" placeholder="Enter image URL" />
                             <span asp-validation-for="ImageUrl" class="text-danger"></span>
                         </div>
 
-                        <div class="form-group mb-3">
-                            <label asp-for="Price" class="control-label">Price</label>
-                            <input asp-for="Price" class="form-control" placeholder="Enter price" />
-                            <span asp-validation-for="Price" class="text-danger"></span>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group mb-3">
+                                    <label asp-for="Price120x170" class="control-label">Price 120x170 (Default)</label>
+                                    <input asp-for="Price120x170" class="form-control" />
+                                    <span asp-validation-for="Price120x170" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group mb-3">
+                                    <label asp-for="Price150x220" class="control-label">Price 150x220</label>
+                                    <input asp-for="Price150x220" class="form-control" />
+                                    <span asp-validation-for="Price150x220" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group mb-3">
+                                    <label asp-for="Price200x290" class="control-label">Price 200x290</label>
+                                    <input asp-for="Price200x290" class="form-control" />
+                                    <span asp-validation-for="Price200x290" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group mb-3">
+                                    <label asp-for="Stock" class="control-label">Stock</label>
+                                    <input asp-for="Stock" class="form-control" />
+                                    <span asp-validation-for="Stock" class="text-danger"></span>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="form-group mb-3">

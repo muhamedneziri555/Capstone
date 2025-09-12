@@ -31,15 +31,24 @@ namespace CarpetStore.Models.Services
 
                 foreach (var item in shoppingCartItems)
                 {
+                    if (item.Product == null)
+                    {
+                        throw new Exception("Cart item has no product");
+                    }
+
                     var orderDetail = new OrderDetail
                     {
                         Quantity = item.Qty,
                         ProductId = item.Product.Id,
-                        Price = item.Product.Price,
-                        Product = item.Product
+                        Price = item.UnitPrice,
+                        Product = item.Product,
+                        Size = item.SelectedSize
                     };
                     order.OrderDetails.Add(orderDetail);
-                    total += item.Product.Price * item.Qty;
+                    total += item.UnitPrice * item.Qty;
+
+                    // Decrement stock, clamped at zero
+                    item.Product.Stock = Math.Max(0, item.Product.Stock - item.Qty);
                 }
 
                 order.OrderTotal = total;
@@ -65,7 +74,7 @@ namespace CarpetStore.Models.Services
             return _dbContext.Orders
                 .Include(o => o.OrderDetails)
                 .ThenInclude(od => od.Product)
-                .FirstOrDefault(o => o.Id == id);
+                .FirstOrDefault(o => o.Id == id)!;
         }
 
         public IEnumerable<Order> GetOrdersByUserId(string userId)

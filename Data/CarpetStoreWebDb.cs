@@ -16,6 +16,7 @@ namespace CarpetStore.Data
         public DbSet<ShoppingCartItem> ShoppingCartItems { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetail { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -29,6 +30,13 @@ namespace CarpetStore.Data
                 new Product { Id = 6, Name = "Acrylic Ibiza", Detail = "Dimensions: 150x220", Price = 320, IsTrendingProduct = true, ImageUrl = "https://fe3b71.cdn.akinoncloud.com/products/2023/11/20/3382/5ef2b90e-4527-440f-87b0-a84240087ae2_size1024x1319.jpg" },
                 new Product { Id = 7, Name = "Acrylic Pena", Detail = "Dimensions: 150x220", Price = 425, IsTrendingProduct = true, ImageUrl = "https://fe3b71.cdn.akinoncloud.com/products/2023/06/05/2620/55e4d03a-d072-4fae-952f-86d89466bbef_size1024x1319.jpg" },
                 new Product { Id = 8, Name = "Acrylic Milano", Detail = "Dimensions: 150x220", Price = 280, IsTrendingProduct = true, ImageUrl = "https://fe3b71.cdn.akinoncloud.com/products/2023/06/05/2620/55e4d03a-d072-4fae-952f-86d89466bbef_size1024x1319.jpg" }
+            );
+
+            modelBuilder.Entity<Category>().HasData(
+                new Category { Id = 1, Name = "Acrylic" },
+                new Category { Id = 2, Name = "Persian" },
+                new Category { Id = 3, Name = "Polyester" },
+                new Category { Id = 4, Name = "Synthetic" }
             );
         }
     }

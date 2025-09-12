@@ -18,13 +18,23 @@
                     <p style="font-size: 1.1rem; color: #666; margin-bottom: 25px; line-height: 1.6;">
                         @Model.Detail
                     </p>
+
+                    <div class="mb-3">
+                        <label for="sizeSelect" class="form-label">Select size</label>
+                        <select id="sizeSelect" class="form-select" onchange="updatePrice()">
+                            <option value="120x170" data-price="@((Model.Price120x170 ?? Model.Price).ToString("0.00"))" selected>120x170</option>
+                            <option value="150x220" data-price="@((Model.Price150x220 ?? Model.Price).ToString("0.00"))">150x220</option>
+                            <option value="200x290" data-price="@((Model.Price200x290 ?? Model.Price).ToString("0.00"))">200x290</option>
+                        </select>
+                    </div>
+
                     <div style="margin-bottom: 30px;">
-                        <span style="font-size: 1.5rem; font-weight: 600; color: #2c3e50;">
-                            @Model.Price.ToString("C2")
+                        <span id="priceDisplay" style="font-size: 1.5rem; font-weight: 600; color: #2c3e50;">
+                            @((Model.Price120x170 ?? Model.Price).ToString("C2"))
                         </span>
                     </div>
                     <div>
-                        <a asp-controller="ShoppingCart" asp-action="AddToShoppingCart" asp-route-pId="@Model.Id" 
+                        <a id="addToCartLink" asp-controller="ShoppingCart" asp-action="AddToShoppingCart" asp-route-pId="@Model.Id" asp-route-size="120x170" asp-route-unitPrice="@((Model.Price120x170 ?? Model.Price).ToString(System.Globalization.CultureInfo.InvariantCulture))"
                            class="btn btn-primary" style="padding: 10px 30px; font-size: 1.1rem; border-radius: 25px;">
                             <i class="fas fa-shopping-cart" style="margin-right: 8px;"></i>Add to Cart
                         </a>
@@ -34,3 +44,20 @@
         </div>
     </div>
 </div>
+
+<script>
+    function updatePrice() {
+        const select = document.getElementById('sizeSelect');
+        const option = select.options[select.selectedIndex];
+        const price = parseFloat(option.getAttribute('data-price')) || 0;
+        const priceDisplay = document.getElementById('priceDisplay');
+        const addToCartLink = document.getElementById('addToCartLink');
+
+        priceDisplay.textContent = price.toLocaleString(undefined, { style: 'currency', currency: 'USD' });
+
+        const url = new URL(addToCartLink.href, window.location.origin);
+        url.searchParams.set('size', select.value);
+        url.searchParams.set('unitPrice', price.toString());
+        addToCartLink.href = url.pathname + url.search;
+    }
+</script>

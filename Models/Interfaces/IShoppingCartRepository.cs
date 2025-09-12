@@ -2,8 +2,8 @@
 {
 	public interface IShoppingCartRepository
 	{
-		void AddToCart(Product product);
-		int RemoveFromCart(Product product);
+		void AddToCart(Product product, string selectedSize, decimal unitPrice);
+		int RemoveFromCart(Product product, string? selectedSize = null);
 		List<ShoppingCartItem> GetShoppingCartItems();
 		void ClearCart();
 		decimal GetShoppingCartTotal();

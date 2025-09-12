@@ -30,11 +30,10 @@ namespace CarpetStore.Models.Services
 
         public void AddProduct(Product product)
         {
-            // Set category based on product name
-            if (!string.IsNullOrEmpty(product.Name))
+            // Sync base price to smallest size price by convention
+            if (product.Price120x170.HasValue)
             {
-                var firstWord = product.Name.Split(' ')[0];
-                product.Category = firstWord + " Collection";
+                product.Price = product.Price120x170.Value;
             }
 
             dbContext.Products.Add(product);
@@ -43,16 +42,15 @@ namespace CarpetStore.Models.Services
 
         public Product GetProductById(int id)
         {
-            return dbContext.Products.Find(id);
+            return dbContext.Products.Find(id)!;
         }
 
         public void UpdateProduct(Product product)
         {
-            // Update category based on product name
-            if (!string.IsNullOrEmpty(product.Name))
+            // Sync base price to smallest size price by convention
+            if (product.Price120x170.HasValue)
             {
-                var firstWord = product.Name.Split(' ')[0];
-                product.Category = firstWord + " Collection";
+                product.Price = product.Price120x170.Value;
             }
 
             dbContext.Products.Update(product);
@@ -62,7 +60,7 @@ namespace CarpetStore.Models.Services
         public void DeleteProduct(int id)
         {
             // First, remove all shopping cart items that reference this product
-            var cartItems = dbContext.ShoppingCartItems.Where(s => s.Product.Id == id).ToList();
+            var cartItems = dbContext.ShoppingCartItems.Where(s => s.Product != null && s.Product.Id == id).ToList();
             dbContext.ShoppingCartItems.RemoveRange(cartItems);
 
             // Then remove the product

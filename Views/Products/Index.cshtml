@@ -10,6 +10,7 @@
                 <th style="text-align: center;">Name</th>
                 <th style="text-align: center;">Detail</th>
                 <th style="text-align: center;">Price</th>
+                <th style="text-align: center;">Stock</th>
                 <th style="text-align: center;">Actions</th>
             </tr>
         </thead>
@@ -22,6 +23,7 @@
                     <td style="vertical-align: middle; text-align: center; font-weight: 500;">@product.Name</td>
                     <td style="vertical-align: middle; text-align: center;">@product.Detail</td>
                     <td style="vertical-align: middle; text-align: center; font-weight: 500;">@product.Price.ToString("C2")</td>
+                    <td style="vertical-align: middle; text-align: center; font-weight: 500;">@product.Stock</td>
                     <td style="vertical-align: middle; text-align: center;">
                         <a asp-action="Detail" asp-route-id="@product.Id" class="btn btn-outline-primary btn-sm mx-1">Details</a>
                         <a asp-action="Edit" asp-route-id="@product.Id" class="btn btn-outline-warning btn-sm mx-1">Edit</a>
@@ -32,6 +34,77 @@
         </tbody>
     </table>
     <a asp-action="Create" class="btn btn-info" style="margin: 20px auto; display: block;">Create</a>
+
+    <div style="width: 80%; margin: 0 auto;" class="mt-5">
+        <div class="card shadow-sm border-0" style="background-color: #ffffff; border: 1px solid #e9ecef;">
+            <div class="card-body p-4">
+                <h5 class="mbr-section-subtitle mbr-fonts-style align-center mb-4 display-5" style="text-align: center; font-size: 1.5rem; font-weight: 600; color: #232323;">
+                    Category Management
+                </h5>
+                
+                @if (TempData["Error"] != null)
+                {
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        @TempData["Error"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                }
+                @if (TempData["Success"] != null)
+                {
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        @TempData["Success"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                }
+                
+                <div class="mb-4">
+                    <form asp-action="CreateCategory" method="post" class="d-flex gap-3 align-items-end">
+                        <div class="flex-grow-1">
+                            <label class="form-label mb-2" style="color: #232323; font-weight: 500;">Add New Category</label>
+                            <input name="name" class="form-control form-control-lg" 
+                                   placeholder="Enter category name (e.g., Premium, Kids, Luxury)" 
+                                   style="border-radius: 8px; border: 1px solid #ced4da; background: #ffffff; color: #232323; font-weight: 400;"
+                                   onfocus="this.style.borderColor='#b8860b'; this.style.boxShadow='0 0 0 0.2rem rgba(184, 134, 11, 0.25)'"
+                                   onblur="this.style.borderColor='#ced4da'; this.style.boxShadow='none'" />
+                        </div>
+                        <button type="submit" class="btn btn-lg px-4 py-3" 
+                                style="border-radius: 8px; font-weight: 500; background-color: #b8860b; border-color: #b8860b; color: white; transition: all 0.3s ease;"
+                                onmouseover="this.style.backgroundColor='#9a6f08'; this.style.borderColor='#9a6f08'; this.style.transform='translateY(-1px)'"
+                                onmouseout="this.style.backgroundColor='#b8860b'; this.style.borderColor='#b8860b'; this.style.transform='translateY(0)'">
+                            Create
+                        </button>
+                    </form>
+                </div>
+                
+                <div class="mt-4">
+                    <h6 class="mb-3" style="color: #232323; font-weight: 500;">
+                        Existing Categories
+                    </h6>
+                    <div class="d-flex flex-wrap gap-2">
+                        @foreach (var c in (IEnumerable<CarpetStore.Models.Category>)ViewBag.Categories)
+                        {
+                            <div class="badge px-3 py-2 d-flex align-items-center" 
+                                 style="border-radius: 20px; font-size: 0.9rem; font-weight: 400; background-color: #f8f9fa; color: #232323; border: 1px solid #e9ecef;">
+                                @c.Name
+                                <form asp-action="DeleteCategory" method="post" class="d-inline ms-2" 
+                                      onsubmit="return confirm('Are you sure you want to delete the \'@c.Name\' category?')">
+                                    <input type="hidden" name="id" value="@c.Id" />
+                                    <button type="submit" class="btn btn-sm p-0 border-0" 
+                                            style="width: 18px; height: 18px; font-size: 12px; border-radius: 50%; background: #dc3545; color: white; transition: all 0.2s ease;"
+                                            onmouseover="this.style.background='#c82333'; this.style.transform='scale(1.1)'"
+                                            onmouseout="this.style.background='#dc3545'; this.style.transform='scale(1)'"
+                                            title="Delete @c.Name category">
+                                        ×
+                                    </button>
+                                </form>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         new DataTable('#table');
     </script>

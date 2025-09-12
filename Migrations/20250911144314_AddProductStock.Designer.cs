@@ -4,6 +4,7 @@ using CarpetStore.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CarpetStore.Migrations
 {
     [DbContext(typeof(CarpetStoreWebDb))]
-    partial class CarpetStoreWebDbModelSnapshot : ModelSnapshot
+    [Migration("20250911144314_AddProductStock")]
+    partial class AddProductStock
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -89,45 +92,6 @@ namespace CarpetStore.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-                });
-
-            modelBuilder.Entity("CarpetStore.Models.Category", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Categories");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Acrylic"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Persian"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Polyester"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Name = "Synthetic"
-                        });
                 });
 
             modelBuilder.Entity("CarpetStore.Models.Order", b =>

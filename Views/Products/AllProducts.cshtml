@@ -59,17 +59,20 @@
         {
             <div class="col-md-4 mb-4">
                 <div style="background: white; border-radius: 15px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); padding: 20px; height: 100%;">
-                    <div style="text-align: center; margin-bottom: 15px;">
+                    <div style="text-align: center; margin-bottom: 10px;">
                         <img src="@product.ImageUrl" alt="@product.Name" 
-                             style="width: 100%; height: 250px; object-fit: cover; border-radius: 10px;"
+                             style="width: 100%; height: 250px; object-fit: cover; border-radius: 10px; opacity:@(product.Stock <= 0 ? 0.6 : 1);"
                              onerror="this.src='/images/no-image.png'">
                     </div>
+                    @if (product.Stock <= 0)
+                    {
+                        <div style="text-align:center; margin-bottom: 10px;">
+                            <span style="display:inline-block; background:#dc3545; color:#fff; padding:4px 10px; border-radius: 12px; font-size: .85rem;">Out of stock</span>
+                        </div>
+                    }
                     <h3 style="font-size: 1.2rem; font-weight: 600; text-align: center; margin-bottom: 10px; color: #b8860b;">
                         @product.Name
                     </h3>
-                    <p style="color: #666; text-align: center; margin-bottom: 15px;">
-                        @product.Detail
-                    </p>
                     <div style="text-align: center; margin-bottom: 20px;">
                         <span style="font-size: 1.3rem; font-weight: 600; color: #2c3e50;">
                             @product.Price.ToString("C2")
