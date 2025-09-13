@@ -2,6 +2,7 @@
 using CarpetStore.Models;
 using CarpetStore.Utility;
 using CarpetStore.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Reflection;
@@ -35,6 +36,7 @@ namespace CarpetStore.Controllers
                     UserName = "admin@gmail.com",
                     Email = "admin@gmail.com",
                     Name = "admin",
+                    // AccountCreated = DateTime.Now
                 };
 
                 var result = _userManager.CreateAsync(adminUser, "Admin123@").Result;
@@ -82,6 +84,13 @@ namespace CarpetStore.Controllers
 
             if (result.Succeeded)
             {
+                // Update last login time
+                // var user = await _userManager.FindByEmailAsync(loginViewModel.Email);
+                // if (user != null)
+                // {
+                //     user.LastLogin = DateTime.Now;
+                //     await _userManager.UpdateAsync(user);
+                // }
                 return RedirectToAction("Index", "Home");
             }
 
@@ -126,7 +135,8 @@ namespace CarpetStore.Controllers
             {
                 UserName = model.Email,
                 Email = model.Email,
-                Name = model.Name
+                Name = model.Name,
+                // AccountCreated = DateTime.Now
             };
 
             var result = await _userManager.CreateAsync(user, model.Password);
@@ -145,6 +155,120 @@ namespace CarpetStore.Controllers
             }
 
             return View(model);
+        }
+
+        [Authorize]
+        public async Task<IActionResult> AccountSettings()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return RedirectToAction("Login");
+            }
+
+            var viewModel = new AccountSettingsViewModel
+            {
+                FirstName = user.Name?.Split(' ').FirstOrDefault() ?? "",
+                LastName = user.Name?.Split(' ').Skip(1).FirstOrDefault() ?? "",
+                Email = user.Email ?? "",
+                PhoneNumber = user.PhoneNumber ?? "",
+                AccountCreated = null, // user.AccountCreated,
+                LastLogin = null // user.LastLogin
+            };
+
+            return View(viewModel);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> UpdateProfile(AccountSettingsViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("AccountSettings", model);
+            }
+
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return RedirectToAction("Login");
+            }
+
+            // Update user information
+            user.Name = $"{model.FirstName} {model.LastName}".Trim();
+            user.Email = model.Email;
+            user.UserName = model.Email; // Update username to match email
+            user.PhoneNumber = model.PhoneNumber;
+
+            var result = await _userManager.UpdateAsync(user);
+            if (result.Succeeded)
+            {
+                TempData["Success"] = "Profile updated successfully!";
+            }
+            else
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+            }
+
+            // Reload the view with updated data
+            model.AccountCreated = null; // user.AccountCreated;
+            model.LastLogin = null; // user.LastLogin;
+            return View("AccountSettings", model);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(AccountSettingsViewModel model)
+        {
+            if (string.IsNullOrEmpty(model.CurrentPassword) || 
+                string.IsNullOrEmpty(model.NewPassword) || 
+                string.IsNullOrEmpty(model.ConfirmPassword))
+            {
+                ModelState.AddModelError("", "All password fields are required.");
+                return View("AccountSettings", model);
+            }
+
+            if (model.NewPassword != model.ConfirmPassword)
+            {
+                ModelState.AddModelError("", "New password and confirmation password do not match.");
+                return View("AccountSettings", model);
+            }
+
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return RedirectToAction("Login");
+            }
+
+            var result = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+            if (result.Succeeded)
+            {
+                TempData["Success"] = "Password changed successfully!";
+                // Clear password fields
+                model.CurrentPassword = "";
+                model.NewPassword = "";
+                model.ConfirmPassword = "";
+            }
+            else
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+            }
+
+            // Reload user data
+            model.FirstName = user.Name?.Split(' ').FirstOrDefault() ?? "";
+            model.LastName = user.Name?.Split(' ').Skip(1).FirstOrDefault() ?? "";
+            model.Email = user.Email ?? "";
+            model.PhoneNumber = user.PhoneNumber ?? "";
+            model.AccountCreated = null; // user.AccountCreated;
+            model.LastLogin = null; // user.LastLogin;
+
+            return View("AccountSettings", model);
         }
     }
 }

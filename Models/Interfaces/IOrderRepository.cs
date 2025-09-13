@@ -9,5 +9,6 @@ namespace CarpetStore.Models.Interfaces
         Order? GetOrderById(int id);
         IEnumerable<Order> GetOrdersByUserId(string userId);
         void UpdateOrder(Order order);
+        void DeleteOrder(int id);
     }
 }

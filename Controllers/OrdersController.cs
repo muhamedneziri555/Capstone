@@ -12,12 +12,14 @@ namespace CarpetStore.Controllers
         private readonly IOrderRepository _orderRepository;
         private readonly IProductRepository _productRepository;
         private readonly IShoppingCartRepository _shopCartRepository;
+        private readonly IProductStockRepository _stockRepository;
 
-        public OrdersController(IOrderRepository orderRepository, IProductRepository productRepository, IShoppingCartRepository shopCartRepository)
+        public OrdersController(IOrderRepository orderRepository, IProductRepository productRepository, IShoppingCartRepository shopCartRepository, IProductStockRepository stockRepository)
         {
             _orderRepository = orderRepository;
             _productRepository = productRepository;
             _shopCartRepository = shopCartRepository;
+            _stockRepository = stockRepository;
         }
 
         public IActionResult Checkout()
@@ -55,12 +57,22 @@ namespace CarpetStore.Controllers
                 order.UserId = userId;
                 order.OrderDate = DateTime.Now;
                 order.OrderStatus = "Pending";
+                order.PaymentStatus = "Pending";
                 order.OrderDetails = new List<OrderDetail>();
 
                 // Remove validation errors for system-generated fields
                 ModelState.Remove("UserId");
                 ModelState.Remove("OrderStatus");
                 ModelState.Remove("OrderDetails");
+                
+                // Remove validation errors for card fields if payment method doesn't require them
+                if (order.PaymentMethod != "Credit Card" && order.PaymentMethod != "Debit Card")
+                {
+                    ModelState.Remove("CardNumber");
+                    ModelState.Remove("CardHolderName");
+                    ModelState.Remove("ExpiryDate");
+                    ModelState.Remove("CVV");
+                }
 
                 if (!ModelState.IsValid)
                 {
@@ -81,6 +93,12 @@ namespace CarpetStore.Controllers
 
                 // Place the order
                 _orderRepository.PlaceOrder(order);
+
+                // Consume reserved stock for each item in the order
+                foreach (var item in items)
+                {
+                    _stockRepository.ConsumeStock(item.Product.Id, item.SelectedSize, item.Qty);
+                }
 
                 // Clear the cart
                 _shopCartRepository.ClearCart();
@@ -128,7 +146,7 @@ namespace CarpetStore.Controllers
                 var orders = _orderRepository.GetOrdersByUserId(userId);
                 return View(orders);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Log the error
                 TempData["Error"] = "An error occurred while retrieving your orders";
@@ -147,7 +165,34 @@ namespace CarpetStore.Controllers
 
             order.OrderStatus = status;
             _orderRepository.UpdateOrder(order);
-            return RedirectToAction("Index", "Orders");
+            return RedirectToAction("Index", "Admin");
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteOrder(int id)
+        {
+            var order = _orderRepository.GetOrderById(id);
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            // Restore stock for each item in the order
+            foreach (var item in order.OrderDetails)
+            {
+                if (!string.IsNullOrEmpty(item.Size))
+                {
+                    _stockRepository.ReleaseStock(item.ProductId, item.Size, item.Quantity);
+                }
+            }
+
+            // Delete the order
+            _orderRepository.DeleteOrder(id);
+            
+            TempData["Success"] = "Order deleted successfully!";
+            return RedirectToAction("Index", "Admin");
         }
     }
 }

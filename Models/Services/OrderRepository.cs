@@ -91,6 +91,23 @@ namespace CarpetStore.Models.Services
             _dbContext.Orders.Update(order);
             _dbContext.SaveChanges();
         }
+
+        public void DeleteOrder(int id)
+        {
+            var order = _dbContext.Orders
+                .Include(o => o.OrderDetails)
+                .FirstOrDefault(o => o.Id == id);
+
+            if (order != null)
+            {
+                // Remove order details first (cascade delete should handle this, but being explicit)
+                _dbContext.Set<OrderDetail>().RemoveRange(order.OrderDetails);
+                
+                // Remove the order
+                _dbContext.Orders.Remove(order);
+                _dbContext.SaveChanges();
+            }
+        }
     }
 }
 

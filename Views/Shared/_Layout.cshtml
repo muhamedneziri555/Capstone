@@ -9,6 +9,7 @@
         isAdmin = await userManager.IsInRoleAsync(user, "Admin");
     }
     var cartCount = Context.Session.GetInt32("CartCount") ?? 0;
+    var wishlistCount = Context.Session.GetInt32("WishlistCount") ?? 0;
     var categories = dbContext.Categories?.OrderBy(c => c.Name).ToList() ?? new List<CarpetStore.Models.Category>();
 }
 <!DOCTYPE html>
@@ -32,6 +33,7 @@
     <link rel="stylesheet" href="~/socicon/css/styles.css">
     <link rel="stylesheet" href="~/theme/css/style.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 
     <link rel="preload" href="https://fonts.googleapis.com/css?family=Jost:100,200,300,400,500,600,700,800,900,100i,200i,300i,400i,500i,600i,700i,800i,900i&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Jost:100,200,300,400,500,600,700,800,900,100i,200i,300i,400i,500i,600i,700i,800i,900i&display=swap"></noscript>
@@ -75,7 +77,9 @@
                          @if(isAdmin)
                         {
                             <li class="nav-item"><a class="nav-link link text-black show display-4" asp-controller="Products" asp-action="Index">Products</a></li>
+                            <li class="nav-item"><a class="nav-link link text-black show display-4" asp-controller="Stock" asp-action="Index">Stock</a></li>
                             <li class="nav-item"><a class="nav-link link text-black show display-4" asp-controller="Admin" asp-action="Dashboard">Orders</a></li>
+                            <li class="nav-item"><a class="nav-link link text-black show display-4" asp-controller="Customer" asp-action="Index">Customers</a></li>
                             <li class="nav-item"><a class="nav-link link text-black show display-4" asp-controller="Reports" asp-action="Index">Reports</a></li>
                         }
                         <li class="nav-item dropdown">
@@ -83,8 +87,14 @@
                             @if (signInManager.IsSignedIn(User))
                             {
                                  <div class="dropdown-menu show" aria-labelledby="dropdown-751" data-bs-popper="none">
+                                <a class="text-black show dropdown-item display-4" asp-action="AccountSettings" asp-controller="Account">
+                                    <i class="fas fa-user-cog"></i> Account Settings
+                                </a>
+                                <div class="dropdown-divider"></div>
                                 <form method="post" id="logoutForm" asp-controller="Account" asp-action="LogOff">
-                                    <a role="button" class="dropdown-item" onclick="event.target.parentNode.submit();">Logout</a>
+                                    <a role="button" class="dropdown-item" onclick="event.target.parentNode.submit();">
+                                        <i class="fas fa-sign-out-alt"></i> Logout
+                                    </a>
                                 </form>
                                 </div>
                             }
@@ -95,20 +105,24 @@
                             </div>
                             }
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link link text-black show display-4" asp-controller="ShoppingCart" asp-action="Index">
-                                <span class="mobi-mbri mobi-mbri-shopping-bag mbr-iconfont mbr-iconfont-btn"><small>(@cartCount)</small></span>
-                            </a>
-                        </li>
                         @if (User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
+                                <a class="nav-link link text-black show display-4" asp-controller="Wishlist" asp-action="Index">
+                                    <i class="fas fa-heart"></i> Wishlist <small>(@wishlistCount)</small>
+                                </a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link link text-black show display-4" asp-controller="Orders" asp-action="MyOrders">
-                                    <span class="mobi-mbri mobi-mbri-cart mbr-iconfont mbr-iconfont-btn"></span>
-                                    My Orders
+                                    <i class="fas fa-box"></i> My Orders
                                 </a>
                             </li>
                         }
+                        <li class="nav-item">
+                            <a class="nav-link link text-black show display-4" asp-controller="ShoppingCart" asp-action="Index">
+                                <i class="fas fa-shopping-cart"></i> Cart <small>(@cartCount)</small>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -128,6 +142,7 @@
     <script src="~/theme/js/script.js"></script>
     <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
+
 
 </body>
 </html>

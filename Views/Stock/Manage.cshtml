@@ -1,0 +1,174 @@
+@model List<CarpetStore.Models.ProductStock>
+
+@{
+    ViewData["Title"] = "Stock Management";
+    var product = ViewBag.Product as CarpetStore.Models.Product;
+    var dimensions = ViewBag.Dimensions as string[];
+}
+
+<div style="margin-top: 100px; padding: 20px;">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2 style="color: #b8860b;">Stock Management</h2>
+                <h4 class="text-muted">@product.Name</h4>
+            </div>
+            <a asp-controller="Stock" asp-action="Index" class="btn btn-outline-primary">
+                <i class="fas fa-arrow-left"></i> Back to All Stocks
+            </a>
+        </div>
+
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                @TempData["Success"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        }
+
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                @TempData["Error"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        }
+
+        <!-- Product Info Card -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-md-3">
+                        <img src="@product.ImageUrl" alt="@product.Name" 
+                             style="width: 100%; max-width: 200px; height: auto; border-radius: 10px;">
+                    </div>
+                    <div class="col-md-9">
+                        <h5>@product.Name</h5>
+                        <p class="text-muted">@product.Detail</p>
+                        <p><strong>Base Price:</strong> @product.Price.ToString("C2")</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bulk Update Form -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-edit"></i> Bulk Stock Update</h5>
+            </div>
+            <div class="card-body">
+                <form asp-action="BulkUpdate" method="post">
+                    <input type="hidden" name="productId" value="@product.Id" />
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label class="form-label">120x170 Stock</label>
+                            <input type="number" name="stock120x170" class="form-control" 
+                                   value="@(Model.FirstOrDefault(s => s.Dimension == "120x170")?.StockQuantity ?? 0)" min="0">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">150x220 Stock</label>
+                            <input type="number" name="stock150x220" class="form-control" 
+                                   value="@(Model.FirstOrDefault(s => s.Dimension == "150x220")?.StockQuantity ?? 0)" min="0">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">200x290 Stock</label>
+                            <input type="number" name="stock200x290" class="form-control" 
+                                   value="@(Model.FirstOrDefault(s => s.Dimension == "200x290")?.StockQuantity ?? 0)" min="0">
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Update All Stock Levels
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Individual Stock Management -->
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-list"></i> Individual Stock Management</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    @foreach (var dimension in dimensions)
+                    {
+                        var stock = Model.FirstOrDefault(s => s.Dimension == dimension);
+                        <div class="col-md-4 mb-4">
+                            <div class="card @(stock?.IsInStock == true ? "border-success" : "border-danger")">
+                                <div class="card-header @(stock?.IsInStock == true ? "bg-success text-white" : "bg-danger text-white")">
+                                    <h6 class="mb-0">@dimension</h6>
+                                </div>
+                                <div class="card-body">
+                                    @if (stock != null)
+                                    {
+                                        <div class="mb-2">
+                                            <strong>Total Stock:</strong> @stock.StockQuantity
+                                        </div>
+                                        <div class="mb-2">
+                                            <strong>Reserved:</strong> @stock.ReservedQuantity
+                                        </div>
+                                        <div class="mb-2">
+                                            <strong>Available:</strong> 
+                                            <span class="@(stock.AvailableStock > 0 ? "text-success" : "text-danger")">
+                                                @stock.AvailableStock
+                                            </span>
+                                        </div>
+                                        <div class="mb-3">
+                                            <strong>Status:</strong>
+                                            @if (stock.IsInStock)
+                                            {
+                                                <span class="badge bg-success">In Stock</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-danger">Out of Stock</span>
+                                            }
+                                        </div>
+                                        <form asp-action="UpdateStock" method="post" class="d-inline">
+                                            <input type="hidden" name="productId" value="@product.Id" />
+                                            <input type="hidden" name="dimension" value="@dimension" />
+                                            <div class="input-group">
+                                                <input type="number" name="quantity" class="form-control" 
+                                                       value="@stock.StockQuantity" min="0">
+                                                <button type="submit" class="btn btn-outline-primary">
+                                                    <i class="fas fa-save"></i>
+                                                </button>
+                                            </div>
+                                        </form>
+                                    }
+                                    else
+                                    {
+                                        <div class="text-center">
+                                            <p class="text-muted">No stock record</p>
+                                            <form asp-action="CreateStock" method="post">
+                                                <input type="hidden" name="productId" value="@product.Id" />
+                                                <input type="hidden" name="dimension" value="@dimension" />
+                                                <div class="input-group">
+                                                    <input type="number" name="quantity" class="form-control" 
+                                                           placeholder="Enter stock" min="0">
+                                                    <button type="submit" class="btn btn-success">
+                                                        <i class="fas fa-plus"></i> Create
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+

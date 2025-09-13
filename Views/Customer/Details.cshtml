@@ -1,0 +1,182 @@
+@model CarpetStore.Models.ApplicationUser
+
+<div style="margin-top: 100px; padding: 20px;">
+    <div class="container-fluid">
+        <!-- Header -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h2 class="mb-1 text-primary">
+                            <i class="fas fa-user"></i> Customer Details
+                        </h2>
+                        <p class="text-muted mb-0">@Model.Name</p>
+                    </div>
+                    <div>
+                        <a asp-action="Index" class="btn btn-secondary me-2">
+                            <i class="fas fa-arrow-left"></i> Back to Customers
+                        </a>
+                        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">
+                            <i class="fas fa-edit"></i> Edit Customer
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Customer Information -->
+            <div class="col-lg-4">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-light">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-user-circle text-primary"></i> Customer Information
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="text-center mb-4">
+                            <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3" 
+                                 style="width: 80px; height: 80px;">
+                                <i class="fas fa-user text-white" style="font-size: 2rem;"></i>
+                            </div>
+                            <h4 class="mb-0">@Model.Name</h4>
+                            <p class="text-muted">Customer ID: @Model.Id.Substring(0, 8)...</p>
+                        </div>
+
+                        <div class="mb-3">
+                            <h6 class="text-muted mb-1">Email Address</h6>
+                            <p class="mb-0">
+                                <a href="mailto:@Model.Email" class="text-decoration-none">
+                                    <i class="fas fa-envelope me-1"></i>@Model.Email
+                                </a>
+                            </p>
+                        </div>
+
+                        <div class="mb-3">
+                            <h6 class="text-muted mb-1">Phone Number</h6>
+                            <p class="mb-0">
+                                @if (!string.IsNullOrEmpty(Model.PhoneNumber))
+                                {
+                                    <a href="tel:@Model.PhoneNumber" class="text-decoration-none">
+                                        <i class="fas fa-phone me-1"></i>@Model.PhoneNumber
+                                    </a>
+                                }
+                                else
+                                {
+                                    <span class="text-muted">Not provided</span>
+                                }
+                            </p>
+                        </div>
+
+                        <div class="mb-3">
+                            <h6 class="text-muted mb-1">Account Created</h6>
+                            <p class="mb-0">
+                                <i class="fas fa-calendar-plus me-1"></i>
+                                @Model.AccountCreated?.ToString("MMMM dd, yyyy 'at' h:mm tt")
+                            </p>
+                        </div>
+
+                        <div class="mb-0">
+                            <h6 class="text-muted mb-1">Last Login</h6>
+                            <p class="mb-0">
+                                <i class="fas fa-clock me-1"></i>
+                                @Model.LastLogin?.ToString("MMMM dd, yyyy 'at' h:mm tt")
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order History -->
+            <div class="col-lg-8">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-light">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-shopping-bag text-primary"></i> Order History (@ViewBag.Orders.Count orders)
+                        </h5>
+                    </div>
+                    <div class="card-body p-0">
+                        @if (ViewBag.Orders != null && ((List<CarpetStore.Models.Order>)ViewBag.Orders).Any())
+                        {
+                            <div class="table-responsive">
+                                <table class="table table-hover mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th class="border-0">Order #</th>
+                                            <th class="border-0">Date</th>
+                                            <th class="border-0">Status</th>
+                                            <th class="border-0">Payment</th>
+                                            <th class="border-0">Total</th>
+                                            <th class="border-0 text-center">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var order in (List<CarpetStore.Models.Order>)ViewBag.Orders)
+                                        {
+                                            <tr>
+                                                <td class="align-middle">
+                                                    <a asp-action="OrderDetails" asp-controller="Admin" asp-route-id="@order.Id" 
+                                                       class="text-decoration-none fw-bold">
+                                                        #@order.Id
+                                                    </a>
+                                                </td>
+                                                <td class="align-middle">
+                                                    @order.OrderDate.ToString("MMM dd, yyyy")
+                                                </td>
+                                                <td class="align-middle">
+                                                    <span class="badge @(order.OrderStatus switch {
+                                                        "Pending" => "bg-warning",
+                                                        "Processing" => "bg-info", 
+                                                        "Shipped" => "bg-primary",
+                                                        "Delivered" => "bg-success",
+                                                        "Cancelled" => "bg-danger",
+                                                        _ => "bg-secondary"
+                                                    })">@order.OrderStatus</span>
+                                                </td>
+                                                <td class="align-middle">
+                                                    @if (order.PaymentMethod.ToLower().Contains("cash") || order.PaymentMethod.ToLower().Contains("delivery"))
+                                                    {
+                                                        <span class="badge bg-success">
+                                                            <i class="fas fa-money-bill-wave me-1"></i>Cash
+                                                        </span>
+                                                    }
+                                                    else if (order.PaymentMethod.ToLower().Contains("card") || order.PaymentMethod.ToLower().Contains("credit") || order.PaymentMethod.ToLower().Contains("debit"))
+                                                    {
+                                                        <span class="badge bg-primary">
+                                                            <i class="fas fa-credit-card me-1"></i>Card
+                                                        </span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="badge bg-info">@order.PaymentMethod</span>
+                                                    }
+                                                </td>
+                                                <td class="align-middle">
+                                                    <span class="fw-bold text-primary">@order.OrderTotal.ToString("C2")</span>
+                                                </td>
+                                                <td class="align-middle text-center">
+                                                    <a asp-action="OrderDetails" asp-controller="Admin" asp-route-id="@order.Id" 
+                                                       class="btn btn-sm btn-outline-primary" title="View Order">
+                                                        <i class="fas fa-eye"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="text-center py-5">
+                                <i class="fas fa-shopping-bag text-muted" style="font-size: 3rem;"></i>
+                                <h5 class="text-muted mt-3">No Orders Yet</h5>
+                                <p class="text-muted">This customer hasn't placed any orders.</p>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

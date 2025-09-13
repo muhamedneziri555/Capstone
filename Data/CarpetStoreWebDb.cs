@@ -17,6 +17,9 @@ namespace CarpetStore.Data
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetail { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<WishlistItem> WishlistItems { get; set; }
+        public DbSet<ProductStock> ProductStocks { get; set; }
+        public DbSet<ProductSize> ProductSizes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -38,6 +41,13 @@ namespace CarpetStore.Data
                 new Category { Id = 3, Name = "Polyester" },
                 new Category { Id = 4, Name = "Synthetic" }
             );
+
+            // Configure ProductSize relationship
+            modelBuilder.Entity<ProductSize>()
+                .HasOne(ps => ps.Product)
+                .WithMany(p => p.CustomSizes)
+                .HasForeignKey(ps => ps.ProductId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

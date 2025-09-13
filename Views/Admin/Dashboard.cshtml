@@ -40,15 +40,44 @@
                             </span>
                         </td>
                         <td class="text-center">
-                            <a asp-controller="Admin" asp-action="OrderDetails" asp-route-id="@order.Id" 
-                               class="btn btn-info btn-sm">
-                                <i class="fas fa-eye"></i> View Details
-                            </a>
+                            <div class="btn-group" role="group">
+                                <a asp-controller="Admin" asp-action="OrderDetails" asp-route-id="@order.Id" 
+                                   class="btn btn-info btn-sm" title="View Details">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <button type="button" class="btn btn-danger btn-sm" 
+                                        onclick="confirmDeleteOrder(@order.Id, '@order.FirstName @order.LastName')" 
+                                        title="Delete Order">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
                         </td>
                     </tr>
                 }
             </tbody>
         </table>
+    </div>
+</div>
+
+<!-- Delete Order Confirmation Modal -->
+<div class="modal fade" id="deleteOrderModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirm Delete Order</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete order for <strong id="customerName"></strong>?</p>
+                <p class="text-danger"><small>This action will restore stock and cannot be undone.</small></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form id="deleteOrderForm" method="post" style="display: inline;">
+                    <button type="submit" class="btn btn-danger">Delete Order</button>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -63,5 +92,11 @@
                 tabTrigger.show()
             })
         })
+
+        function confirmDeleteOrder(orderId, customerName) {
+            document.getElementById('customerName').textContent = customerName;
+            document.getElementById('deleteOrderForm').action = '@Url.Action("DeleteOrder", "Orders")/' + orderId;
+            new bootstrap.Modal(document.getElementById('deleteOrderModal')).show();
+        }
     </script>
 } 

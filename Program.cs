@@ -10,7 +10,10 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>(ShoppingCartRepository.GetCart);
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IWishlistRepository, WishlistRepository>();
+builder.Services.AddScoped<IProductStockRepository, ProductStockRepository>();
 builder.Services.AddIdentity<CarpetStore.Models.ApplicationUser, IdentityRole>().AddEntityFrameworkStores<CarpetStoreWebDb>();
+
 
 builder.Services.AddDbContext<CarpetStoreWebDb>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("CarpetStoreWebDbConnection")));
 builder.Services.AddSession();
@@ -34,6 +37,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+
 app.UseAuthentication();
 app.UseAuthorization();
 

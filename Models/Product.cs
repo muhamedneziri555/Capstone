@@ -20,5 +20,8 @@
         public decimal? Price200x290 { get; set; }
 
         public int Stock { get; set; }
+        
+        // Navigation property for custom sizes
+        public virtual ICollection<ProductSize>? CustomSizes { get; set; }
     }
 }

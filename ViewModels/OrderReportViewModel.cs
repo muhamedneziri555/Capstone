@@ -41,3 +41,12 @@ namespace CarpetStore.ViewModels
         public double Percentage { get; set; }
     }
 }
+
+
+
+
+
+
+
+
+
