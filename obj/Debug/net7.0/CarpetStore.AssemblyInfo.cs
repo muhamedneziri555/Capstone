@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CarpetStore")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2d98b915c700d54ae571aa013f9f16a90917cdb8")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b9e682fcc82ef57fc6069ad9211c40136662db55")]
 [assembly: System.Reflection.AssemblyProductAttribute("CarpetStore")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CarpetStore")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
